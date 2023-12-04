@@ -122,3 +122,17 @@ SELECT nom, prenom, service FROM employes WHERE service = 'informatique';
 -- Afficher les employés qui ont été embauchés entre le 01/01/2015 et aujourd'hui :
 
 SELECT * FROM employes WHERE date_embauche BETWEEN '2015-01-01' AND CURDATE();
+
+-- ### LIKE valeur approchante ### --
+
+-- LIKE permet de selectionner des enrégistrements une valeur qui commence ou qui se termine ou qui contient un motif précis
+-- On utilise le caractère % pour remplacer un ou plusieurs caractères
+
+-- Sa syntaxe est la suivante :
+    SELECT `les_champs` FROM `nom_de_la_table` WHERE `champ` LIKE `motif`;
+
+-- Afficher les employés dont leprénom commence par la lettre 'S' :
+
+-- Afficher les employés dont le prénom se termine par la lettre 'e' :
+
+-- Afficher les employés dont le prénom contient la lettre 'a' :

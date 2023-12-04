@@ -132,7 +132,90 @@ SELECT * FROM employes WHERE date_embauche BETWEEN '2015-01-01' AND CURDATE();
     SELECT `les_champs` FROM `nom_de_la_table` WHERE `champ` LIKE `motif`;
 
 -- Afficher les employés dont leprénom commence par la lettre 'S' :
+SELECT * FROM employes WHERE prenom LIKE 'S%';
 
 -- Afficher les employés dont le prénom se termine par la lettre 'e' :
+SELECT * FROM employes WHERE prenom LIKE '%e';
 
 -- Afficher les employés dont le prénom contient la lettre 'a' :
+SELECT * FROM employes WHERE prenom LIKE '%a%';
+
+-- Afficher les employés dont le prénom contient la lettre 'a' et qui travaillent dans le service commercial :
+
+-- ## Les opérateurs logiques ## --
+
+= égal à
+!= ou <> différent de
+< strictement inférieur à
+<= inférieur ou égal à
+> strictement supérieur à
+>= supérieur ou égal à
+
+-- Liste de tous les employés qui ont un salaire supérieur à 2000€ :
+SELECT * FROM employes WHERE salaire > 2000;
+
+-- Liste de tous les employés sauf ceux qui travaillent dans le service informatique :
+
+SELECT * FROM employes WHERE service != 'informatique';
+
+
+-- ## ORDER BY ## --
+
+-- ORDER BY permet de trier les résultats d'une requête SELECT: par ordre croissant (ASC) ou décroissant (DESC)
+
+-- Sa syntaxe est la suivante :
+    SELECT `les_champs` FROM `nom_de_la_table` ORDER BY `champ` ASC|DESC;
+
+-- Afficher les prénoms des employés par ordre alphabétique :
+SELECT prenom FROM employes ORDER BY prenom ASC;
+
+-- Afficher les prénoms , nom et salaire des employés par ordre alphabétique sur les  prénoms et par ordre décroissant des salaires :
+SELECT prenom, nom, salaire FROM employes ORDER BY prenom ASC, salaire DESC;
+
+-- ## LIMIT ## --
+
+-- LIMIT permet de limiter le nombre de résultats d'une requête SELECT
+
+-- Sa syntaxe est la suivante :
+    SELECT `les_champs` FROM `nom_de_la_table` LIMIT `index de départ`, `nombre de résultats`;
+
+-- Afficher les 5 premiers employés :
+
+SELECT * FROM employes LIMIT 0, 5;
+
+-- Afficher les 5 premiers employés après les 5 premiers :
+
+SELECT * FROM employes LIMIT 5, 5;
+
+-- Afficher 3 employés à partir du 6ème :
+
+SELECT * FROM employes LIMIT 5, 3;
+
+
+-- ### AS alias ### --
+
+-- AS permet de donner un alias à une table ou à un champ
+
+SELECT prenom, salaire*12  FROM employes;
+
+SELECT prenom, salaire*12 AS salaire_annuel FROM employes;
+
+-- ## Fonction d'aggregation : SUM(), AVG(), COUNT(), MIN(), MAX() ## --
+
+-- Afficher la masse salariale de l'entreprise :
+SELECT SUM(salaire*12)  AS masse_salariale FROM employes;
+
+-- Afficher le salaire moyen de l'entreprise :
+SELECT AVG(salaire)  AS salaire_moyen FROM employes;
+
+-- Afficher le nombre de femmes dans l'entreprise :
+SELECT COUNT(*)  AS nombre_de_femmes FROM employes WHERE sexe = 'f';
+
+-- Afficher le salaire le plus bas de l'entreprise :
+SELECT MIN(salaire)  AS salaire_min FROM employes;
+
+-- Afficher le salaire le plus haut de l'entreprise :
+SELECT MAX(salaire)  AS salaire_max FROM employes;
+
+-- Quel est le salaire min de l'entreprise  ainsi que le prénom et le nom de l'employé qui le perçoit ?
+

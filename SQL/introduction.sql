@@ -219,3 +219,49 @@ SELECT MAX(salaire)  AS salaire_max FROM employes;
 
 -- Quel est le salaire min de l'entreprise  ainsi que le prénom et le nom de l'employé qui le perçoit ?
 
+SELECT nom,prenom, salaire FROM employes WHERE salaire = (SELECT MIN(salaire) FROM employes);
+
+
+
+-- ### IN ### --
+
+-- IN permet de selectionner des enregistrements dont la valeur d'un champ est égale à l'une des valeurs d'une liste
+
+-- Sa syntaxe est la suivante :
+    SELECT `les_champs` FROM `nom_de_la_table` WHERE `champ` IN ('valeur1', 'valeur2', 'valeur3');
+
+-- Afficher les employés qui travaillent dans le service commercial ou dans le service informatique :
+
+SELECT * FROM employes WHERE service IN ('commercial', 'informatique');
+
+-- ### NOT IN ### --
+
+-- NOT IN permet de selectionner des enregistrements dont la valeur d'un champ est différente de l'une des valeurs d'une liste
+
+-- Sa syntaxe est la suivante :
+    SELECT `les_champs` FROM `nom_de_la_table` WHERE `champ` NOT IN ('valeur1', 'valeur2', 'valeur3');
+
+-- Listes des employés sauf ceux ceux du service commercial et du service informatique :
+
+SELECT * FROM employes WHERE service NOT IN ('commercial', 'informatique');
+
+-- ### AND ### --
+
+-- AND permet de combiner plusieurs conditions dans une requête SELECT
+
+-- Sa syntaxe est la suivante :
+    SELECT `les_champs` FROM `nom_de_la_table` WHERE `condition1` AND `condition2`;
+
+-- Afficher les employés qui travaillent dans le service commercial et qui ont un salaire supérieur à 2000€ :
+
+SELECT * FROM employes WHERE service = 'commercial' AND salaire > 2000;
+
+
+-- ### OR ### --
+
+-- OR permet de combiner plusieurs conditions dans une requête SELECT
+
+
+-- Nom, prenom et salaire des employés qui travaillent dans le service commercial et qui ont un salaire de 1900€ ou 2300€ :
+
+SELECT nom, prenom, salaire FROM employes WHERE service = 'commercial' AND (salaire = 1900 OR salaire = 2300); 

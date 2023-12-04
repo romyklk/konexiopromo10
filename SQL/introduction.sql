@@ -265,3 +265,62 @@ SELECT * FROM employes WHERE service = 'commercial' AND salaire > 2000;
 -- Nom, prenom et salaire des employés qui travaillent dans le service commercial et qui ont un salaire de 1900€ ou 2300€ :
 
 SELECT nom, prenom, salaire FROM employes WHERE service = 'commercial' AND (salaire = 1900 OR salaire = 2300); 
+
+-- ## GROUP BY ## --
+
+-- GROUP BY permet de regrouper les résultats d'une requête SELECT selon une valeur commune
+
+-- Sa syntaxe est la suivante :
+    SELECT `les_champs` FROM `nom_de_la_table` GROUP BY `champ`;
+
+-- Afficher le nombre d'employés par service :
+
+SELECT COUNT(*) AS nombre_employes, service FROM employes GROUP BY service;
+
+-- HAVING permet de filtrer les résultats d'une requête GROUP BY
+
+-- Sa syntaxe est la suivante :
+    SELECT `les_champs` FROM `nom_de_la_table` GROUP BY `champ` HAVING `condition`;
+
+SELECT COUNT(*) AS nombre_employes, service FROM employes GROUP BY service HAVING COUNT(*) > 2;
+
+
+---------- LES REQUTES D'INSERTION ----------
+
+-- INSERT INTO permet d'insérer des données dans une table
+
+-- Sa syntaxe est la suivante :
+    INSERT INTO `nom_de_la_table` (`champ1`, `champ2`, `champ3`) VALUES ('valeur1', 'valeur2', 'valeur3');  
+
+INSERT INTO `employes`(`prenom`, `nom`, `sexe`, `service`, `date_embauche`, `salaire`) VALUES ('Jean', 'Dupont', 'm', 'commercial', '2017-01-01', 2000);
+
+---------- LES REQUTES DE MODIFICATION ----------
+
+-- UPDATE permet de modifier des données dans une table
+
+-- Sa syntaxe est la suivante :
+    UPDATE `nom_de_la_table` SET `champ1` = 'valeur1', `champ2` = 'valeur2', `champ3` = 'valeur3' WHERE `condition`;
+
+UPDATE `employes` SET `salaire` = 2500 WHERE `id_employes` = 992;
+
+-- Modifier le salaire de Guillaume à 2500€ et son service à 'Informatique' :
+
+UPDATE `employes` SET `salaire` = 2500, `service` = 'Informatique' WHERE nom= "Miller";
+
+-- REPLACE INTO : Elle permet de remplacer un enregistrement par un autre. Si l'enregistrement n'existe pas, il est créé.
+
+-- Sa syntaxe est la suivante :
+    REPLACE INTO `nom_de_la_table` (`champ1`, `champ2`, `champ3`) VALUES ('valeur1', 'valeur2', 'valeur3');
+
+REPLACE INTO `employes`(`id_employes`, `prenom`, `nom`, `sexe`, `service`, `date_embauche`, `salaire`) VALUES (992, 'Romy', 'KLK', 'm', 'DEV', '2012-07-02', 2500);
+
+---------- LES REQUTES DE SUPPRESSION ----------
+
+-- DELETE permet de supprimer des données dans une table
+
+-- Sa syntaxe est la suivante :
+    DELETE FROM `nom_de_la_table` WHERE `condition`;
+
+DELETE FROM `employes` WHERE `id_employes` = 997;
+
+-- Supprimer tous les employés qui travaillent dans le service commercial  et qui ont un salaire inférieur à 2000€ :

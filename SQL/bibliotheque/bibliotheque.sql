@@ -116,3 +116,9 @@ SELECT titre FROM livre WHERE id_livre IN
         (SELECT id_abonne FROM abonne WHERE prenom ='Chloe'));
 
 --13. Quels sont les livres qui n'ont jamais été empruntés ?
+
+SELECT titre FROM livre WHERE id_livre NOT IN 
+    (SELECT id_livre FROM emprunt);
+
+
+---- ######### LES JOINTURES ##### ------

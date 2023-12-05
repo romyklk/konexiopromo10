@@ -127,3 +127,106 @@ SELECT titre FROM livre WHERE id_livre NOT IN
 -- Une jointure permet de combiner les données de plusieurs tables en une seule requête pour former un résultat unique. 
 
 -- Différence entre jointure et sous-requête : Une jointure est possible dans tous les cas , une sous-requête n'est possible quz dans le cas où le résultat de la sous-requête ne contient qu'une seule colonne.
+
+-- 14. Afficher les dates de sortie et de rendu des livres empruntés par Guillaume
+
+SELECT abonne.prenom , emprunt.date_sortie, emprunt.date_rendu 
+FROM abonne, emprunt
+WHERE abonne.id_abonne = emprunt.id_abonne 
+AND abonne.prenom = 'Guillaume';
+
+SELECT a.prenom , e.date_sortie, e.date_rendu 
+FROM abonne a, emprunt e
+WHERE a.id_abonne = e.id_abonne 
+AND a.prenom = 'Guillaume';
+
+-- INNER JOIN : jointure interne
+
+SELECT a.prenom , e.date_sortie, e.date_rendu 
+FROM abonne a
+INNER JOIN emprunt e
+ON a.id_abonne = e.id_abonne 
+WHERE a.prenom = 'Guillaume';
+
+-- 15. Date de sortie et de rendu des livres dont l'auteur est ALPHONE DAUDET
+SELECT l.auteur , e.date_sortie, e.date_rendu
+FROM livre l 
+INNER JOIN emprunt e 
+ON l.id_livre = e.id_livre
+WHERE l.auteur = 'ALPHONE DAUDET';
+
+SELECT l.auteur , e.date_sortie, e.date_rendu
+FROM livre l 
+INNER JOIN emprunt e 
+ON l.id_livre = e.id_livre
+AND l.auteur = 'ALPHONE DAUDET';
+
+SELECT l.auteur , e.date_sortie, e.date_rendu
+FROM livre l ,emprunt e
+WHERE l.id_livre = e.id_livre
+AND l.auteur = 'ALPHONE DAUDET';
+
+
+-- 16. Qui a emprrunté le livre "Une vie"  en 2016 ?
+
+SELECT a.prenom , l.titre, e.date_sortie
+FROM abonne a,livre l, emprunt e 
+WHERE l.id_livre =e.id_livre
+AND e.id_abonne = a.id_abonne
+AND e.date_sortie LIKE '2016%'
+AND l.titre = 'Une Vie';
+
+SELECT a.prenom 
+FROM livre l 
+INNER JOIN emprunt e
+ON l.id_livre = e.id_livre
+INNER JOIN abonne a
+ON e.id_abonne = a.id_abonne
+WHERE l.titre = 'Une Vie'
+AND e.date_sortie LIKE '2016%';
+
+-- 17. Nombre de livre emprunté par chaque abonné
+SELECT a.prenom,COUNT(e.id_abonne) AS 'nombre de livre'
+FROM abonne a
+INNER JOIN emprunt e 
+ON a.id_abonne = e.id_abonne
+GROUP BY e.id_abonne 
+ORDER BY COUNT(*);
+
+-- 18. Nombre de livre à rendre par chaque abonné
+
+SELECT a.prenom,COUNT(e.id_livre) AS 'A RENDRE'
+FROM abonne a 
+INNER JOIN emprunt e 
+ON a.id_abonne = e.id_abonne
+WHERE e.date_rendu IS NULL 
+GROUP BY e.id_abonne;
+
+-- 19. Qui a emprunté quoi et quand ?(Titre du livre, prénom de l'abonné, date de sortie)
+
+SELECT l.titre, a.prenom, e.date_sortie
+FROM abonne a,livre l, emprunt e 
+WHERE a.id_abonne = e.id_abonne
+AND l.id_livre = e.id_livre;
+
+-- 20. Prénom des abonnés avec les id des livres qu'ils ont emprunté
+SELECT e.id_livre, a.prenom
+FROM abonne a, emprunt e
+WHERE a.id_abonne = e.id_abonne;
+
+-- 21. Insérer un nouvel abonné
+INSERT INTO abonne (prenom) VALUES ('Marie');
+
+-- LEFT JOIN : jointure externe gauche
+SELECT l.id_livre , a.prenom
+FROM livre l
+RIGHT JOIN emprunt e
+ON l.id_livre = e.id_livre
+RIGHT JOIN abonne a
+ON e.id_abonne = a.id_abonne;
+
+SELECT  a.prenom,e.id_livre
+FROM abonne a
+LEFT JOIN emprunt e
+ON a.id_abonne = e.id_abonne;
+

@@ -61,9 +61,55 @@ INSERT INTO emprunt (id_emprunt, id_livre, id_abonne, date_sortie, date_rendu) V
 SELECT * FROM livre;
 
 -- 2. id des livres qui n'ont pas été rendus
--- IS NULL permet de vérifier si la valeur est nulle
+-- `IS NULL` permet de vérifier si la valeur est nulle
+
 SELECT id_livre FROM emprunt WHERE date_rendu IS NULL;
 
 -- ## Requêtes imbriquées
 
+-- Une requête imbriquée est une requête SELECT qui se trouve dans la clause WHERE d'une autre requête SELECT
+
 -- 3. titre qui n'ont pas été rendus
+SELECT titre FROM livre WHERE id_livre IN 
+    (SELECT id_livre FROM emprunt WHERE date_rendu IS NULL);
+
+-- 4. Prénom des abonnés qui n'ont pas rendu de livre
+SELECT prenom FROM abonne WHERE id_abonne IN 
+    (SELECT id_abonne FROM emprunt WHERE date_rendu IS NULL);
+
+-- 5. Numéro des livres que Chloé a emprunté
+SELECT id_livre FROM emprunt WHERE id_abonne IN 
+    (SELECT id_abonne FROM abonne WHERE prenom = 'Chloe');
+
+-- 6 . Prénom des abonnés ayant emprunté un livre le 11/12/2016
+SELECT prenom FROM abonne WHERE id_abonne IN 
+    (SELECT id_abonne FROM emprunt WHERE date_sortie = '2016-12-11');
+
+-- 7. Nombre de livre emprrunté par Guillaume
+
+SELECT COUNT(*) FROM emprunt WHERE id_abonne IN 
+    (SELECT id_abonne FROM abonne WHERE prenom = 'Guillaume');
+
+-- 8. Liste des abonnés ayant emprunté un livre de ALPHONE DAUDET
+SELECT prenom FROM abonne WHERE id_abonne IN 
+    (SELECT id_abonne FROM emprunt WHERE id_livre IN 
+        (SELECT id_livre FROM livre WHERE auteur = 'ALPHONE DAUDET'));
+
+-- 9. Titre des livres empruntés par Chloé
+SELECT titre FROM livre WHERE id_livre IN 
+    (SELECT id_livre FROM emprunt WHERE id_abonne =
+        (SELECT id_abonne FROM abonne WHERE prenom ='Chloe'));
+
+
+-- 10. Titre des livres que Chloé n'a pas emprunté
+SELECT titre FROM livre WHERE id_livre NOT IN 
+    (SELECT id_livre FROM emprunt WHERE id_abonne =
+        (SELECT id_abonne FROM abonne WHERE prenom ='Chloe'));
+
+-- 11. Qui a emprunté le plus de livres ?
+
+--12. Titre des livre que Chloé n'a pas encore rendu
+
+--13. Qui n'a pas encore rendu de livre ?
+
+--14. Quels sont les livres qui n'ont jamais été empruntés ?

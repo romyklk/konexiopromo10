@@ -30,3 +30,14 @@ INSERT INTO livre(id_livre,auteur,titre) VALUES
 (103, 'ALPHONE DAUDET', 'Le petit chose'),
 (104, 'ALEXANDRE DUMAS', 'La Reine Margot'),
 (105, 'ALEXANDRE DUMAS', 'Les Trois Mousquetaires');
+
+
+CREATE TABLE emprunt(
+    id_emprunt int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id_abonne int DEFAULT NULL,
+    id_livre int DEFAULT NULL,
+    date_sortie date NOT NULL,
+    date_rendu date DEFAULT NULL,
+    FOREIGN KEY (id_abonne) REFERENCES abonne(id_abonne),
+    FOREIGN KEY (id_livre) REFERENCES livre(id_livre)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

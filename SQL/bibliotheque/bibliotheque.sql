@@ -107,9 +107,12 @@ SELECT titre FROM livre WHERE id_livre NOT IN
         (SELECT id_abonne FROM abonne WHERE prenom ='Chloe'));
 
 -- 11. Qui a emprunté le plus de livres ?
+SELECT prenom FROM abonne WHERE id_abonne =
+    (SELECT id_abonne FROM emprunt GROUP BY id_abonne ORDER BY COUNT(*) DESC LIMIT 1);
 
---12. Titre des livre que Chloé n'a pas encore rendu
+--12. Titre des livre que Chloé n'a pas encore rendu ?
+SELECT titre FROM livre WHERE id_livre IN 
+    (SELECT id_livre FROM emprunt WHERE date_rendu IS NULL AND id_abonne IN 
+        (SELECT id_abonne FROM abonne WHERE prenom ='Chloe'));
 
---13. Qui n'a pas encore rendu de livre ?
-
---14. Quels sont les livres qui n'ont jamais été empruntés ?
+--13. Quels sont les livres qui n'ont jamais été empruntés ?

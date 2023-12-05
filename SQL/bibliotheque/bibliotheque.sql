@@ -1,3 +1,4 @@
+-- SQLBook: Code
 -- Création de la base de données biblioteque et de ses tables abonne, livre et emprunt avec insertion de données
 
 CREATE DATABASE if not exist biblioteque;
@@ -122,3 +123,7 @@ SELECT titre FROM livre WHERE id_livre NOT IN
 
 
 ---- ######### LES JOINTURES ##### ------
+
+-- Une jointure permet de combiner les données de plusieurs tables en une seule requête pour former un résultat unique. 
+
+-- Différence entre jointure et sous-requête : Une jointure est possible dans tous les cas , une sous-requête n'est possible quz dans le cas où le résultat de la sous-requête ne contient qu'une seule colonne.

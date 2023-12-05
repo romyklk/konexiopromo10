@@ -1,4 +1,5 @@
--- SQLBook: Code
+-- Création de la base de données biblioteque et de ses tables abonne, livre et emprunt avec insertion de données
+
 CREATE DATABASE if not exist biblioteque;
 
 USE biblioteque;
@@ -51,3 +52,18 @@ INSERT INTO emprunt (id_emprunt, id_livre, id_abonne, date_sortie, date_rendu) V
 (6, 105, 2, '2017-01-02', '2017-01-15'),
 (7, 105, 3, '2017-02-15', NULL),
 (8, 100, 2, '2017-02-20', NULL);
+
+
+-- ##### COURS  #####
+
+-- 1. Afficher tous les livres
+
+SELECT * FROM livre;
+
+-- 2. id des livres qui n'ont pas été rendus
+-- IS NULL permet de vérifier si la valeur est nulle
+SELECT id_livre FROM emprunt WHERE date_rendu IS NULL;
+
+-- ## Requêtes imbriquées
+
+-- 3. titre qui n'ont pas été rendus

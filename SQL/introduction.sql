@@ -1,3 +1,4 @@
+-- SQLBook: Code
 -- Pour accéder à la console mysql sur MAC(WAMP) : /Applications/MAMP/Library/bin/mysql --host=localhost -uroot -proot
 
 -- Pour accéder à la console mysql sur windows(WAMP) : C:\wamp\bin\mysql\mysql5.6.17\bin\mysql.exe -uroot -proot OU Cliquer sur l'icone WAMP en bas à droite, puis MySQL, puis MySQL console

@@ -230,3 +230,15 @@ FROM abonne a
 LEFT JOIN emprunt e
 ON a.id_abonne = e.id_abonne;
 
+-- ## UNION & UNION ALL
+-- UNION : permet de combiner les résultats de plusieurs requêtes SELECT en un seul résultat
+
+-- UNION ALL se comporte comme UNION mais ne supprime pas les doublons
+
+SELECT prenom FROM abonne
+UNION 
+SELECT titre FROM livre;
+
+SELECT auteur FROM livre
+UNION
+SELECT prenom FROM abonne;

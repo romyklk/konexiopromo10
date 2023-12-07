@@ -1,3 +1,4 @@
+-- SQLBook: Code
 -- Soit la base de données BANQUE contenant les tables suivantes :
 
 --  • agence (*id_Agence, Nom, Ville, Actif)

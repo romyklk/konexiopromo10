@@ -1,3 +1,4 @@
+-- SQLBook: Code
 
 -- Pour accéder à la console mysql sur MAC(WAMP) : /Applications/MAMP/Library/bin/mysql --host=localhost -uroot -proot
 

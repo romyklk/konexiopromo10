@@ -316,7 +316,7 @@ echo "<hr><h2>Expression match</h2>";
 
 $color = "red";
 
-$affichage = match($color){
+$affichage = match ($color) {
     "red" => "Vous aimez le rouge",
     "blue" => "Vous aimez le bleu",
     "green" => "Vous aimez le vert",
@@ -353,3 +353,177 @@ Non nisi pariatur soluta, minus, facilis neque odit at nihil temporibus officia 
 // substr() : Retourne une partie d'une chaîne de caractère.Elle prend 3 arguments : La chaîne de caractère, la position de départ et la longueur souhaitée.
 
 echo substr($txt2, 0, 98) . "...<a href='#'>Lire la suite</a>"; // Affiche les 100 premiers caractères de la chaîne de caractère.
+
+//!\\ PHP 8
+echo "<br>";
+// str_contains() : Retourne true si une chaîne de caractère est contenue dans une autre.Elle est sensible à la casse.
+// str_starts_with() : Retourne true si une chaîne de caractère commence par une autre.Elle est sensible à la casse.
+// str_ends_with() : Retourne true si une chaîne de caractère se termine par une autre.Elle est sensible à la casse.
+
+// var_dump() est une instruction qui permet d'afficher le contenu et le type d'une variable.Elle est très utile pour le débuggage.
+
+var_dump(str_contains($txt2, "Lorem")); // Retourne true.
+echo "<br>";
+var_dump(str_starts_with($txt2, "Lorem")); // Retourne true.
+echo "<br>";
+var_dump(str_ends_with($txt2, "Lorem")); // Retourne false.
+
+echo "<hr><h2>Les fonctions utilisateur</h2>";
+
+// Ce sont des fonctions que l'on va créer nous même et qui vont nous permettre de réaliser des traitements spécifiques.
+
+// Déclaration d'une fonction
+
+function maFonction()
+{
+    // Code à exécuter
+    echo "<hr>";
+}
+
+// Appel d'une fonction
+maFonction();
+
+function sayHello()
+{
+    echo "Hello !";
+}
+
+sayHello();
+
+echo "<hr><h2>Les paramètres de fonctions</h2>";
+// Fonction avec paramètre
+
+function direBonjour($prenom)
+{
+    return "Bonjour $prenom !";
+}
+
+echo direBonjour("John"); // On appelle la fonction en lui passant un argument.
+$user1 = "Bruno";
+echo "<br>";
+echo direBonjour($user1); // On appelle la fonction en lui passant une variable.
+
+echo "<hr><h2>Les fonctions avec arguments par défaut</h2>";
+// Ici je déclare une fonction avec un argument par défaut.Cela signifie que si je n'envoie pas d'argument à ma fonction, elle prendra la valeur par défaut.
+function presentation($age, $nom = 'User incognito')
+{
+    echo "Bonjour je m'appelle $nom et j'ai $age ans";
+}
+
+presentation(35, "John");
+echo "<br>";
+presentation(22);
+
+echo "<hr><h2>Les fonctions avec valeur de retour</h2>";
+
+// Certaines fonctions retournent une valeur après avoir effectué un traitement.Cette valeur peut être exploitée par la suite.
+
+function appliqueTva($montant)
+{
+    return $montant * 1.2;
+}
+echo appliqueTva(100);
+
+// Exercice 3 : Faire une fonction qui prend en paramètre un montant et applique le tau de TVA et retourne le montant TTC.Si le taux n'est pas précisé, il doit être de 20% par défaut.(Vous avez les taux suivants : 5.5%, 10%, 20% et 2.1%).
+
+echo "<br>";
+function calculerTTC($montant, $taux = 1.2)
+{
+
+    return $montant * $taux;
+}
+
+echo calculerTTC(100, 1.1);
+echo "<br>";
+echo calculerTTC(100);
+echo "<br>";
+echo calculerTTC(100, 1.02);
+
+
+// On peut appeler une fonction avant sa déclaration car PHP charge toutes les fonctions avant d'exécuter le code.
+leTemp();
+
+function leTemp()
+{
+    echo "Il fait beau";
+}
+maFonction();
+/* EXERCICE 4 : Faire une fonction qui prend la saison et la température et affiche 
+"Nous sommes en $saison et il fait $temperature degrés"
+Si la température est égale à 1 ou -1 degré, on affiche degré au singulier
+Si la saison est printemps , on affiche "au" devant le nom de la saison
+Exemple : Nous sommes en hiver et il fait -1 degré
+Si la température est supérieur à 18, on affiche " Et il fait chaud" */
+
+// Methode 1
+function saison($saison, $temp)
+{
+    echo ($saison === 'printemps') ? "Nous sommes au $saison " : "Nous sommes en $saison";
+
+    echo ($temp === 1 || $temp === -1) ? " et il fait $temp degré" : " et il fait $temp degrés.";
+
+    echo ($temp > 18) ? " Il fait chaud!" : "";
+}
+
+
+saison('printemps', 22);
+echo "<br>";
+saison('été', 17);
+
+maFonction();
+// Methode 2
+
+function afficherTemperature($saison, $temperature)
+{
+    $message = "Nous sommes ";
+
+    if ($saison === 'printemps') {
+        $message .= "au ";
+    } else {
+        $message .= "en ";
+    }
+
+    $message .= "$saison et il fait ";
+
+    if ($temperature == 1 || $temperature == -1) {
+        $message .= abs($temperature) . " degré";
+    } else {
+        $message .= abs($temperature) . " degrés";
+    }
+
+    if ($temperature > 18) {
+        $message .= " Et il fait chaud";
+    }
+
+    echo $message;
+}
+
+afficherTemperature('hiver', -1);
+echo "<br>";
+afficherTemperature('printemps', 20);
+
+echo "<hr><h2>La portée des variables</h2>";
+
+// Les variables déclarées dans une fonction sont locales à cette fonction.Elles ne peuvent pas être utilisées en dehors de la fonction.
+
+function jourSemaine()
+{
+    $jour = "Jeudi"; // Variable locale à la fonction jourSemaine.
+    return $jour;
+    //echo "test"; // Cette ligne ne sera jamais exécutée car après un return.
+}
+
+//echo $jour; // Erreur car la variable $jour n'existe pas en dehors de la fonction.
+
+$day = jourSemaine(); // On stocke la valeur retournée par la fonction dans une variable.
+echo $day; // Affiche Jeudi.
+
+$country = "France"; // Variable globale.
+
+function showCountry()
+{
+    global $country; // On rend la variable $country accessible à l'intérieur de la fonction en la déclarant en global.
+    echo $country; 
+}
+
+showCountry(); // Affiche France.

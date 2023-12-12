@@ -601,6 +601,8 @@ while ($a <= 3) // La condition(tant que $a est <= 3)
 // Exercice 5: En utilisant une boucle while,écrivez un programme qui calcul la somme des entiers compris entre 1 et 100 et affiche le résultat.
 
 echo "<br>";
+
+// Correction
 $a = 1; // Valeur de départ de la boucle.
 $b = 0; // Somme des entiers compris entre 1 et 100.
 while ($a <= 100) {
@@ -615,17 +617,40 @@ echo "<h3 style='color:blue'>La boucle for</h3>";
 // La boucle for permet d'exécuter un bloc de code un nombre de fois défini à l'avance.
 // for (initialisation; condition; sens(incrémentation ou décrémentation))
 
-for($i = 0; $i <= 10; $i++)
-{
+for ($i = 0; $i <= 10; $i++) {
     echo $i . "==>";
 }
 echo "<br>";
 
 echo '<select>';
-for($j=1; $j<=31; $j++)
-{
+for ($j = 1; $j <= 31; $j++) {
     echo "<option>$j</option>";
 }
 echo '</select>';
 
 // EXERCICE 6 : En utilisant une boucle for,écrivez un programme qui affiche dans une liste déroulante les années , en partant de l'année en cours et en allant jusqu'à 50 ans en arrière.Faites en sorte que votre code soit pérenne quelque soit l'année en cours.
+
+echo "<br>";
+
+
+// Correction
+echo '<select>';
+for ($d = date('Y'); $d >= date('Y') - 50; $d--) {
+    echo "<option>$d</option>";
+}
+echo '</select>';
+?>
+<select>
+    <?php
+    for ($d = 0; $d <= 50; $d++) {
+        $currentYear = date('Y');
+        $currentYear -= $d;
+        echo "<option>$currentYear</option>";
+    }
+    ?>
+</select>
+
+<?php
+
+echo "<br>";
+echo "<hr><h2>Melande de PHP et HTML</h2>";

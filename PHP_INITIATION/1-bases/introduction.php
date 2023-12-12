@@ -654,3 +654,14 @@ echo '</select>';
 
 echo "<br>";
 echo "<hr><h2>Melande de PHP et HTML</h2>";
+
+echo "<table border='1';>";
+echo "<tr>";
+echo "<td>1</td>";
+echo "<td>2</td>";
+echo "<td>3</td>";
+echo "<td>4</td>";
+echo "</tr>";
+echo "</table>";
+
+// Exercice 7 :Faire une boucle qui affiche 10 lignes de 10 cases numérotées de 0 à 99 sur plusieurs lignes dans un tableau HTML.

@@ -619,3 +619,13 @@ for($i = 0; $i <= 10; $i++)
 {
     echo $i . "==>";
 }
+echo "<br>";
+
+echo '<select>';
+for($j=1; $j<=31; $j++)
+{
+    echo "<option>$j</option>";
+}
+echo '</select>';
+
+// EXERCICE 6 : En utilisant une boucle for,écrivez un programme qui affiche dans une liste déroulante les années , en partant de l'année en cours et en allant jusqu'à 50 ans en arrière.Faites en sorte que votre code soit pérenne quelque soit l'année en cours.

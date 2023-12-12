@@ -711,3 +711,164 @@ for ($i = 0; $i < 10; $i++) {
 }
 echo "</table>";
 
+echo "<br>";
+
+echo "<hr><h2>Les tableaux de données (array)</h2>";
+
+// Un tableau de données ou ARRAY en anglais est une variable qui permet de conserver plusieurs valeurs.
+
+// Déclaration d'un tableau de données ARRAY
+
+$liste = array("Grégory", "Nathalie", "Emilie", "François", "Georges");
+// OU
+$liste2 = ["Grégory", "Nathalie", "Emilie", "François", "Georges"];
+
+// Affichage des données d'un tableau de données ARRAY
+// Pour afficher les données d'un tableau de données ARRAY, on utilise la fonction print_r() qui est une fonction d'affichage améliorée.Elle permet d'afficher le contenu d'une variable, d'un tableau ou d'un objet.Elle est principalement utilisée à des fins de débuggage.
+echo "<pre>"; // La balise <pre> permet de formater l'affichage du print_r().
+print_r($liste);
+echo "</pre>";
+
+
+// var_dump() est une instruction qui permet d'afficher le contenu et le type d'une variable.Elle est très utile pour le débuggage.
+echo "<pre>";
+var_dump($liste);
+echo "</pre>";
+
+// Afficher une valeur d'un tableau de données ARRAY
+echo $liste[2]; // Affiche Emilie car les tableaux de données ARRAY sont indexés à partir de 0.
+
+echo "<hr><h2>La boucle foreach</h2>";
+
+// La boucle foreach permet de parcourir un tableau de données ARRAY et d'en afficher les valeurs.
+$countryList[] = "France"; // Cette écriture est équivalente à array_push($countryList, "France");Ellle permet d'ajouter une valeur à la fin du tableau.
+$countryList[] = "Belgique";
+$countryList[] = "Allemagne";
+$countryList[] = "Espagne";
+$countryList[] = "Italie";
+$countryList[] = "Portugal";
+
+
+var_dump($countryList);
+
+// Pour parcourir un tableau de données ARRAY, on utilise la boucle foreach. qui prend deux arguments : Le tableau à parcourir et la valeur courante à chaque tour de boucle.
+foreach ($countryList as $value) {
+    echo $value . "<br>";
+}
+
+// Ici je lui passe le tableau et je récupure l'index $key et la valeur $value à chaque tour de boucle.
+foreach ($countryList as $key => $value) {   //$key contient l'index
+    // $value contient la valeur.
+    echo $key . "=>" . $value . "<br>";
+}
+
+// sizeof() ou count() permet de connaître la taille d'un tableau de données ARRAY.
+
+echo sizeof($countryList); // Affiche 6.
+echo "<br>";
+echo count($liste); // Affiche 5.
+
+// implode() permet de transformer un tableau de données ARRAY en chaîne de caractère.
+echo "<br>";
+echo implode(' -- ', $countryList); // Affiche France--Belgique--Allemagne--Espagne--Italie--Portugal.
+
+// Tableau associatif
+
+$tabUser = [
+    "prenom" => "John",
+    "nom" => "Doe",
+    "age" => 35,
+    "ville" => "Paris"
+];
+
+echo "<br>";
+echo $tabUser["prenom"]; // Affiche John.
+
+echo "<hr><h2>Les tableaux multidimensionnels</h2>";
+
+// Un tableau multidimensionnel est un tableau qui contient un ou plusieurs tableaux.
+
+$tabMulti = [
+    0 => [
+        "prenom" => "John",
+        "nom" => "Doe",
+        "age" => 35,
+        "ville" => "Paris"
+    ],
+    1 => [
+        "prenom" => "Bruno",
+        "nom" => "Doe",
+        "age" => 35,
+        "ville" => "Paris"
+    ],
+    2 => [
+        "prenom" => "Claire",
+        "nom" => "Doe",
+        "age" => 35,
+        "ville" => "Paris"
+    ]
+];
+// Afficher la ville de Bruno
+echo $tabMulti[1]["ville"]; // Affiche Paris.
+
+// Afficher le prénom de tous les utilisateurs
+foreach ($tabMulti as $value) {
+    echo $value["prenom"] . "<br>";
+}
+
+for ($i = 0; $i < sizeof($tabMulti); $i++) {
+    echo $tabMulti[$i]["prenom"] . "<br>";
+}
+
+echo "<hr><h2>Les objets</h2>";
+
+// un objet est un conteneur qui permet de regrouper des variables et des fonctions qui vont manipuler ces variables.
+
+// Une classe est un plan qui va définir la structure d'un objet.
+
+class Vehicule
+{
+    // public,private,protected represente les niveaux de visibilité des propriétés et des méthodes.
+    // public signifie que la propriété est accessible partout.
+    public $marque = "Renault"; 
+
+    // protected signifie que la propriété est accessible uniquement à l'intérieur de la classe et des classes héritières.
+    protected $couleur = "Rouge";
+
+    // private signifie que la propriété est accessible uniquement à l'intérieur de la classe.
+    private $poids = 1000;
+
+    // Une méthode est une fonction déclarée à l'intérieur d'une classe.
+
+    public function demarrer()
+    {
+        return "Je démarre";
+    }
+
+}
+
+// Un objet est une instance d'une classe.
+
+$vehicule = new Vehicule(); // Instanciation de la classe Vehicule.
+
+var_dump($vehicule); // Affiche le contenu de l'objet $vehicule.
+
+echo "<br>";
+
+echo $vehicule->demarrer(); // Affiche Je démarre.
+
+echo "<br>";
+
+echo $vehicule->marque; // Affiche Renault.
+
+echo "<br>";
+
+$vehicule->marque = "Peugeot"; // On modifie la valeur de la propriété $marque.
+
+echo $vehicule->marque; // Affiche Peugeot.
+
+echo "<br>";
+
+//echo $vehicule->couleur; // Erreur car la propriété $couleur est protected.
+
+//echo $vehicule->poids; // Erreur car la propriété $poids est private.

@@ -527,3 +527,6 @@ function showCountry()
 }
 
 showCountry(); // Affiche France.
+
+echo "<hr><h2>Typage des arguments et valeur de retour</h2>";
+//!\\ PHP 7 : A partir de PHP 7, on peut typer les arguments et la valeur de retour d'une fonction.

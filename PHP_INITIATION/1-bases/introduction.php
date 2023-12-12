@@ -9,6 +9,7 @@
 
 <?php
 
+
 echo "Hello World !"; // echo est une instruction qui permet d'afficher du texte dans le navigateur.
 
 echo "<h1>Ceci est un titre HTML</h1>"; // On peut mélanger du HTML avec du PHP.
@@ -523,10 +524,98 @@ $country = "France"; // Variable globale.
 function showCountry()
 {
     global $country; // On rend la variable $country accessible à l'intérieur de la fonction en la déclarant en global.
-    echo $country; 
+    echo $country;
 }
 
 showCountry(); // Affiche France.
 
 echo "<hr><h2>Typage des arguments et valeur de retour</h2>";
 //!\\ PHP 7 : A partir de PHP 7, on peut typer les arguments et la valeur de retour d'une fonction.
+
+// declare(strict_types=1); Est une directive qui permet de typer les arguments et la valeur de retour d'une fonction.Elle doit être placée au début du fichier juste après la balise <?php.
+
+function showUser(string $nom, int $age)
+{
+    return "Bonjour $nom, vous avez $age ans <br>";
+}
+
+echo showUser("John", 35);
+echo showUser("John", "35");
+
+// Typage de la valeur de retour
+
+function isMajeur(int $age): bool
+{
+    return $age >= 18;
+}
+var_dump(isMajeur(5)); // Retourne bool(true).
+
+echo "<br>";
+// Fonction fléchée
+
+
+$addition = fn ($a, $b) => $a + $b; // On stocke la fonction dans une variable.
+
+echo $addition(1, 2); // Affiche 3.
+echo "<br>";
+
+$showData = fn ($data) => "Bonjour $data !<br>";
+
+echo $showData("John");
+
+//!\\PHP 8 : A partir de PHP 8, l'argument peut-être d'un type primitif ou d'un autre type.
+
+function concatene(string|int $a, string|int $b): string|int
+{
+    return $a . $b;
+}
+
+echo concatene("Bonjour ", "tout le monde");
+echo "<br>";
+echo concatene(1, 2);
+
+echo "<hr><h2>Les structures itératives (boucles)</h2>";
+
+echo "<h3 style='color:blue'>La boucle while</h3>";
+
+// La boucle while permet d'exécuter un bloc de code tant qu'une condition est évaluée à true.
+
+$a = 0; // Valeur de départ de la boucle.
+while ($a <= 3) // La condition(tant que $a est <= 3)
+{
+    echo $a . "--"; // On affiche la valeur de $a.
+    $a++; // On incrémente $a de 1 à chaque tour de boucle.
+}
+echo "<br>";
+$a = 0;
+while ($a <= 3) // La condition(tant que $a est <= 3)
+{
+    if ($a == 3)
+        echo $a;
+    else
+        echo $a . "--"; // On affiche la valeur de $a.
+
+    $a++; // On incrémente $a de 1 à chaque tour de boucle.
+}
+
+// Exercice 5: En utilisant une boucle while,écrivez un programme qui calcul la somme des entiers compris entre 1 et 100 et affiche le résultat.
+
+echo "<br>";
+$a = 1; // Valeur de départ de la boucle.
+$b = 0; // Somme des entiers compris entre 1 et 100.
+while ($a <= 100) {
+    $b += $a;
+    $a++; //increment de 1
+}
+echo $b; // Affiche 5050.
+
+echo "<br>";
+echo "<h3 style='color:blue'>La boucle for</h3>";
+
+// La boucle for permet d'exécuter un bloc de code un nombre de fois défini à l'avance.
+// for (initialisation; condition; sens(incrémentation ou décrémentation))
+
+for($i = 0; $i <= 10; $i++)
+{
+    echo $i . "==>";
+}

@@ -1,35 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <title>Inclusion de fichier</title>
-</head>
+<?php
+/* 
+INCLUSION DE FICHIER
 
-<body>
+L'inclusion de fichier permet de découper son code en plusieurs fichiers. Cela permet de mieux s'organiser et de mieux structurer son code. Cela permet aussi de réutiliser du code.
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">LOGO</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Accueil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">A Propos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+Pour inclure un fichier, on utilise la fonction include ou require. La différence entre les deux est que si le fichier n'existe pas, include génère une erreur et continue l'exécution du script alors que require génère une erreur et arrête l'exécution du script.
+
+On peut aussi utiliser include_once ou require_once pour inclure un fichier une seule fois. Cela permet d'éviter d'inclure plusieurs fois le même fichier.
+
+On peut inclure des fichiers PHP, HTML, CSS, JS, etc.
+Ici je cré un dossier partials dans lequel je mets mes fichiers header.php et footer.php. Je les inclue ensuite dans mes fichiers accueil.php, apropos.php et contact.php.
+
+*/
+
+require_once 'partials/header.php';
+?>
 
     <div class="container">
         <div class="card mb-3 mt-3" style="max-width: 900px;">
@@ -79,17 +64,6 @@
 
     </div>
 
-
-    <footer class="bg-body-secondary text-center text-lg-start mt-5">
-        <div class="text-center p-3">
-            Made with &hearts; by KONEXIO 10 &copy; <?php echo date('Y'); ?>
-        </div>
-    </footer>
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-</body>
-
-</html>
+<?php
+include 'partials/footer.php';
+?>

@@ -665,3 +665,48 @@ echo "</tr>";
 echo "</table>";
 
 // Exercice 7 :Faire une boucle qui affiche 10 lignes de 10 cases numérotées de 0 à 99 sur plusieurs lignes dans un tableau HTML.
+
+// METHODE 1
+echo "<br>";
+echo "<table border='1'>";
+$count = 0;
+for ($i = 0; $i < 10; $i++) {
+    echo "<tr>";
+    for ($j = 0; $j < 10; $j++) {
+        echo "<td>" . $count . "</td>";
+        $count++;
+    }
+    echo "</tr>";
+}
+echo "</table>";
+
+
+echo "<br>";
+
+// METHODE 2
+echo "<table border='1'>";
+echo "<tr>";
+for ($q = 0; $q < 100; $q++) {
+
+    if ($q %  10 == 0) {
+        echo "</tr>";
+    }
+    echo "<td>$q</td>";
+};
+echo "</table>";
+
+echo "<br>";
+
+// METHODE 3
+
+echo "<table border=1>";
+
+for ($i = 0; $i < 10; $i++) {
+    echo "<tr>";
+    for ($j = 0; $j < 10; $j++) {
+        $r = $j + $i * 10;
+        echo "<td>$r</td>";
+    }
+    echo "</tr>";
+}
+echo "</table>";

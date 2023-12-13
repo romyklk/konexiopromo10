@@ -81,11 +81,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <form action="" method="POST">
             <div>
                 <label for="nom">Nom</label>
-                <input type="text" id="nom" name="nom">
+                <input type="text" id="nom" name="nom" required>
             </div> 
             <div style="margin-top: 20px;">
                 <label for="prenom">Prénom</label>
-                <input type="text" id="prenom" name="prenom">
+                <input type="text" id="prenom" name="prenom" required>
             </div>
             <div style="margin-top: 20px;">
                 <input type="submit" value="Envoyer">

@@ -1,7 +1,7 @@
 <?php
 // A VOIR AVEC PLUS DE TARD
 require 'vendor/autoload.php'; // If you're using Composer (recommended)
-define('MA_CLER_API', 'gjjkkjhgfdfghjhjhhgf');
+define('MA_CLER_API', 'SG.8Q9Z3ZQ9QZq');
 
 $email = new \SendGrid\Mail\Mail();
 $email->setFrom("test@example.com", "Example User");

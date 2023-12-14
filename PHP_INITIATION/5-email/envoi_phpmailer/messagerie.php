@@ -32,17 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
         //Recipients
-        $mail->setFrom('romyklk2210@gmail.com', 'KONEXIO 10');
-        $mail->addAddress($email, $fullName);     //Add a recipient
-        $mail->addReplyTo($email, $fullName);
+        $mail->setFrom('romyklk2210@gmail.com', 'KONEXIO 10'); //Adresse email de l'expéditeur et nom de l'expéditeur
+        $mail->addAddress($email, $fullName); // Adresse email du destinataire et nom du destinataire
+        $mail->addReplyTo($email, $fullName); // Au cas ou le destinataire répond à l'email, on pourra répondre à l'expéditeur
 
 
 
         //Content
-        $mail->isHTML(true);                                  //Set email format to HTML
-        $mail->Subject = $sujet;
-        $mail->Body    = $message;
-        $mail->AltBody = $message;
+        $mail->isHTML(true);  // Permet d'envoyer un email au format HTML
+        $mail->Subject = $sujet; // Sujet de l'email
+        $mail->Body    = $message; // Contenu de l'email au format HTML
+        $mail->AltBody = $message; // Contenu de l'email au format texte
+        $mail->CharSet = 'UTF-8'; // Permet de définir l'encodage de l'email
 
         $mail->send();
         echo 'Votre message a bien été envoyé';

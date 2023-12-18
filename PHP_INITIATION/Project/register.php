@@ -1,5 +1,74 @@
 <?php
 require_once './partials/header.php';
+require_once './inc/init.php';
+
+//TRAITEMENT DU FORMUALIRE
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    
+    // Sécurisation des données du formulaire
+    // htmlspecialchars() convertit les caractères spéciaux en entités HTML
+    // addslashes() ajoute des antislashs devant les apostrophes, guillemets doubles, antislashs et NUL
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = htmlspecialchars(addslashes($value));
+    }
+
+    // Déclarartion des variables pour récupérer les données du formulaire
+    $gender = $_POST['gender'];
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $confirmPassword = $_POST['confirm-password'];
+    $address = $_POST['address'];
+    $zipcode = $_POST['zipcode'];
+    $city = $_POST['city'];
+    $country = $_POST['country'];
+
+    // Déclaration d'un tableau d'erreurs
+    $errors = [];
+    
+    // Vérifier si tous les champs sont remplis
+
+    if(empty($gender) || empty($firstname) || empty($lastname) || empty($username) || empty($email) || empty($password) || empty($confirmPassword) || empty($address) || empty($zipcode) || empty($city) || empty($country)) {
+        $errors[] = "Tous les champs sont obligatoires <br>";
+    }
+
+    // Vérifier si le nom d'utilisateur contient au moins 3 caractères
+    if(strlen($username) < 2 || strlen($username) > 20) {
+        $errors[] = "Le nom d'utilisateur doit contenir entre 2 et 20 caractères <br>";
+    }
+
+    // Vérifier le format de l'email
+    // filter_var() permet de filtrer une variable avec un filtre spécifique
+    // FILTER_VALIDATE_EMAIL permet de valider un email
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "L'email n'est pas valide <br>";
+    }
+
+    // Regex pour vérifier le pseudo
+
+    $pattern = '#^[a-zA-Z0-9.*-]+$#';
+
+    // preg_match() permet de vérifier si une chaîne de caractères correspond à une expression regulière
+    if(!preg_match($pattern, $username)) {
+        $errors[] = "Le nom d'utilisateur n'est pas valide <br>";
+    }
+
+    // Vérifier si l'email existe déjà dans la base de données
+
+    $sql = "SELECT email FROM users WHERE email = :email";
+    $req = $pdo->prepare($sql);
+    $req->bindValue(':email', $email, PDO::PARAM_STR);
+    $req->execute();
+    // rowCount() permet de compter le nombre de lignes retournées par la requête
+    if($req->rowCount() > 0) {
+        $errors[] = "L'email existe déjà <br>";
+    }
+
+    var_dump($errors);
+}
 
 ?>
 
@@ -13,12 +82,12 @@ require_once './partials/header.php';
             Inscrivez-vous
         </h1>
 
-        <form class="p-5">
+        <form class="p-5" action="" method="POST" enctype="multipart/form-data">
             <div class="info mb-3 row">
                 <div class="col-md-6">
                     <div class="form-group mb-3">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="male" value="male">
+                            <input class="form-check-input" type="radio" name="gender" id="male" value="male" checked>
                             <label class="form-check-label" for="male">Homme</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -33,7 +102,7 @@ require_once './partials/header.php';
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-person"></i></span>
-                            <input type="text" id="firstname" class="form-control form-control-lg form-control form-control-lg-lg" placeholder="Entrez votre prénom">
+                            <input type="text" id="firstname" class="form-control form-control-lg form-control form-control-lg-lg" placeholder="Entrez votre prénom" name="firstname">
                         </div>
                         <div id="helpBlock" class="form-text"></div>
                     </div>
@@ -41,7 +110,7 @@ require_once './partials/header.php';
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-person"></i></span>
-                            <input type="text" id="username" class="form-control form-control-lg" placeholder="Entrez votre nom d'utilisateur">
+                            <input type="text" id="username" class="form-control form-control-lg" placeholder="Entrez votre nom d'utilisateur" name="username">
                         </div>
                         <div id="helpBlock" class="form-text"></div>
                     </div>
@@ -49,7 +118,7 @@ require_once './partials/header.php';
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                            <input type="password" id="password" class="form-control form-control-lg" placeholder="Entrez votre mot de passe">
+                            <input type="password" name="password" class="form-control form-control-lg" placeholder="Entrez votre mot de passe">
                         </div>
                         <div id="helpBlock" class="form-text"></div>
                     </div>
@@ -57,7 +126,7 @@ require_once './partials/header.php';
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-house-door"></i></span>
-                            <input type="text" id="address" class="form-control form-control-lg" placeholder="Entrez votre adresse">
+                            <input type="text" name="address" class="form-control form-control-lg" placeholder="Entrez votre adresse">
                         </div>
                         <div id="helpBlock" class="form-text"></div>
                     </div>
@@ -65,7 +134,7 @@ require_once './partials/header.php';
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                            <input type="text" id="zipcode" class="form-control form-control-lg" placeholder="Entrez votre code postal">
+                            <input type="text" name="zipcode" class="form-control form-control-lg" placeholder="Entrez votre code postal">
                         </div>
                         <div id="helpBlock" class="form-text"></div>
                     </div>
@@ -76,7 +145,7 @@ require_once './partials/header.php';
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-person"></i></span>
-                            <input type="text" id="lastname" class="form-control form-control-lg" placeholder="Entrez votre nom">
+                            <input type="text" name="lastname" class="form-control form-control-lg" placeholder="Entrez votre nom">
                         </div>
                         <div id="helpBlock" class="form-text"></div>
                     </div>
@@ -84,7 +153,7 @@ require_once './partials/header.php';
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                            <input type="text" id="email" class="form-control form-control-lg" placeholder="Entrez votre email">
+                            <input type="text" name="email" class="form-control form-control-lg" placeholder="Entrez votre email">
                         </div>
                         <div id="helpBlock" class="form-text"></div>
                     </div>
@@ -92,7 +161,7 @@ require_once './partials/header.php';
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                            <input type="password" id="confirm-password" class="form-control form-control-lg" placeholder="Confirmez votre mot de passe">
+                            <input type="password" name="confirm-password" class="form-control form-control-lg" placeholder="Confirmez votre mot de passe">
                         </div>
                         <div id="helpBlock" class="form-text"></div>
                     </div>
@@ -100,7 +169,7 @@ require_once './partials/header.php';
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-building"></i></span>
-                            <input type="text" id="city" class="form-control form-control-lg" placeholder="Entrez votre ville">
+                            <input type="text" name="city" class="form-control form-control-lg" placeholder="Entrez votre ville">
                         </div>
                         <div id="helpBlock" class="form-text"></div>
                     </div>
@@ -108,7 +177,7 @@ require_once './partials/header.php';
                     <div class="form-group">
                         <div class="input-group">
                             <label class="input-group-text form-control-lg" for="country"><i class="bi bi-globe"></i></label>
-                            <select class="form-select" id="country">
+                            <select class="form-select" name="country">
                                 <option value="france">France</option>
                                 <option value="belgique">Belgique</option>
                                 <option value="suisse">Suisse</option>
@@ -128,7 +197,7 @@ require_once './partials/header.php';
                         <div id="helpBlock" class="form-text"></div>
                     </div>
                     <div class="form-group">
-                        <input type="file" class="form-control" id="profile-picture" accept="image/*">
+                        <input type="file" class="form-control" name="profile-picture" accept="image/*">
                     </div>
 
 

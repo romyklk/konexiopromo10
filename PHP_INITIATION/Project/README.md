@@ -18,7 +18,7 @@ Dans ce projet nous allons créer un site e-commerce en PHP procédural avec une
     - id_membre(int, auto_increment primary key)
     - civilite(enum('m', 'f', 'a'))
     - pseudo(varchar(50) unique)
-    - mdp(varchar(100))
+    - mdp(varchar(255))
     - nom(varchar(100))
     - prenom(varchar(100))
     - email(varchar(100) unique)
@@ -29,6 +29,8 @@ Dans ce projet nous allons créer un site e-commerce en PHP procédural avec une
     - statut(int) // 0 = membre, 1 = admin
     - picture(varchar(255))
     - created_at(datetime)
+
+`CREATE TABLE `konexion_project`.`membre` (`id_membre` INT NOT NULL AUTO_INCREMENT , `civilite` ENUM('m','f','a') NOT NULL , `pseudo` VARCHAR(50) NOT NULL , `mdp` VARCHAR(255) NOT NULL , `nom` VARCHAR(100) NOT NULL , `prenom` VARCHAR(150) NOT NULL , `email` VARCHAR(100) NOT NULL , `adresse` VARCHAR(255) NOT NULL , `code_postal` INT UNSIGNED ZEROFILL NOT NULL , `ville` VARCHAR(100) NOT NULL , `pays` VARCHAR(100) NOT NULL , `statut` INT NOT NULL DEFAULT '0' , `picture` VARCHAR(255) NOT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id_membre`), UNIQUE (`pseudo`)) ENGINE = InnoDB;`
 
 
 ### Etape 3 (Inscription)

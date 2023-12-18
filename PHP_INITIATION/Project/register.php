@@ -120,7 +120,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $req->bindValue(':ville', $city, PDO::PARAM_STR);
         $req->bindValue(':pays', $country, PDO::PARAM_STR);
         $req->bindValue(':picture', $imgNewName, PDO::PARAM_STR);
-        $req->execute();
+        if($req->execute()) {
+            header('Location: login.php');
+        }
     }
 
 

@@ -5,7 +5,11 @@ require_once './inc/init.php';
 //TRAITEMENT DU FORMUALIRE
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    
+
+    // Constant d'erreurs
+
+    define('ERROR_NOM', 'Le nom doit contenir entre 2 et 20 caractères');
+
     // Sécurisation des données du formulaire
     // htmlspecialchars() convertit les caractères spéciaux en entités HTML
     // addslashes() ajoute des antislashs devant les apostrophes, guillemets doubles, antislashs et NUL
@@ -28,22 +32,22 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     // Déclaration d'un tableau d'erreurs
     $errors = [];
-    
+
     // Vérifier si tous les champs sont remplis
 
-    if(empty($gender) || empty($firstname) || empty($lastname) || empty($username) || empty($email) || empty($password) || empty($confirmPassword) || empty($address) || empty($zipcode) || empty($city) || empty($country)) {
+    if (empty($gender) || empty($firstname) || empty($lastname) || empty($username) || empty($email) || empty($password) || empty($confirmPassword) || empty($address) || empty($zipcode) || empty($city) || empty($country)) {
         $errors[] = "Tous les champs sont obligatoires <br>";
     }
 
     // Vérifier si le nom d'utilisateur contient au moins 3 caractères
-    if(strlen($username) < 2 || strlen($username) > 20) {
+    if (strlen($username) < 2 || strlen($username) > 20) {
         $errors[] = "Le nom d'utilisateur doit contenir entre 2 et 20 caractères <br>";
     }
 
     // Vérifier le format de l'email
     // filter_var() permet de filtrer une variable avec un filtre spécifique
     // FILTER_VALIDATE_EMAIL permet de valider un email
-    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "L'email n'est pas valide <br>";
     }
 
@@ -52,22 +56,84 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $pattern = '#^[a-zA-Z0-9.*-]+$#';
 
     // preg_match() permet de vérifier si une chaîne de caractères correspond à une expression regulière
-    if(!preg_match($pattern, $username)) {
+    if (!preg_match($pattern, $username)) {
         $errors[] = "Le nom d'utilisateur n'est pas valide <br>";
     }
 
     // Vérifier si l'email existe déjà dans la base de données
 
-    $sql = "SELECT email FROM users WHERE email = :email";
+    $sql = "SELECT email FROM membre WHERE email = :email";
     $req = $pdo->prepare($sql);
     $req->bindValue(':email', $email, PDO::PARAM_STR);
     $req->execute();
     // rowCount() permet de compter le nombre de lignes retournées par la requête
-    if($req->rowCount() > 0) {
+    if ($req->rowCount() > 0) {
         $errors[] = "L'email existe déjà <br>";
     }
 
-    var_dump($errors);
+    // Vérifier si les 2 mots de passe sont identiques
+
+    if ($password != $confirmPassword) {
+        $errors[] = "Les mots de passe ne sont pas identiques <br>";
+    } else {
+        // password_hash() permet de hacher un mot de passe
+        // PASSWORD_DEFAULT permet d'utiliser l'algorithme de hachage bcrypt
+        $password = password_hash($password, PASSWORD_DEFAULT);
+    }
+    // Traitement de l'image de profil
+    if (!empty($_FILES['profile-picture']['name'])) {
+        // Récupérer le nom de l'image
+        $imgName = $_FILES['profile-picture']['name'];
+        // Renommer l'image
+        $imgNewName = time() . '_' . $imgName;
+
+        // Vérifier si le fichier est une image
+        $tabExtension = ['jpg', 'jpeg', 'png', 'gif'];
+
+        $fileExtension = strtolower(pathinfo($imgNewName, PATHINFO_EXTENSION));
+
+        if (!in_array($fileExtension, $tabExtension)) {
+            $errors[] = "Le fichier n'est pas une image <br>";
+        }
+
+        // Vérifier si le fichier n'est pas trop lourd
+        if ($_FILES['profile-picture']['size'] > 8000000) {
+            $errors[] = "Le fichier est trop lourd <br>";
+        }
+    }
+
+    if (empty($errors)) {
+        copy($_FILES['profile-picture']['tmp_name'], IMAGE_PATH . 'profil/' . $imgNewName);
+
+        // Insertion des données dans la base de données
+        $sql = "INSERT INTO `membre`(`civilite`, `pseudo`, `mdp`, `nom`, `prenom`, `email`, `adresse`, `code_postal`, `ville`, `pays`, `picture`) VALUES (:civilite, :pseudo, :mdp, :nom, :prenom, :email, :adresse, :code_postal, :ville, :pays, :picture)";
+
+        $req = $pdo->prepare($sql);
+        $req->bindValue(':civilite', $gender, PDO::PARAM_STR);
+        $req->bindValue(':pseudo', $username, PDO::PARAM_STR);
+        $req->bindValue(':mdp', $password, PDO::PARAM_STR);
+        $req->bindValue(':nom', $lastname, PDO::PARAM_STR);
+        $req->bindValue(':prenom', $firstname, PDO::PARAM_STR);
+        $req->bindValue(':email', $email, PDO::PARAM_STR);
+        $req->bindValue(':adresse', $address, PDO::PARAM_STR);
+        $req->bindValue(':code_postal', $zipcode, PDO::PARAM_STR);
+        $req->bindValue(':ville', $city, PDO::PARAM_STR);
+        $req->bindValue(':pays', $country, PDO::PARAM_STR);
+        $req->bindValue(':picture', $imgNewName, PDO::PARAM_STR);
+        $req->execute();
+    }
+
+
+    // Afficher les erreurs
+
+    if (!empty($errors)) {
+        foreach ($errors as $err) {
+            echo '<div class="alert alert-warning alert-dismissible fade show w-75 mx-auto" role="alert">
+  <strong>Alert!</strong> ' . $err . '
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>';
+        }
+    }
 }
 
 ?>

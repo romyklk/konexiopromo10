@@ -1,5 +1,5 @@
 <?php
-require_once './partials/header.php';
+
 require_once './inc/init.php';
 
 //TRAITEMENT DU FORMUALIRE
@@ -30,8 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $city = $_POST['city'];
     $country = $_POST['country'];
 
-    // Déclaration d'un tableau d'erreurs
-    $errors = [];
 
     // Vérifier si tous les champs sont remplis
 
@@ -120,22 +118,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $req->bindValue(':ville', $city, PDO::PARAM_STR);
         $req->bindValue(':pays', $country, PDO::PARAM_STR);
         $req->bindValue(':picture', $imgNewName, PDO::PARAM_STR);
-        if($req->execute()) {
+        if ($req->execute()) {
             header('Location: login.php');
         }
     }
 
 
-    // Afficher les erreurs
 
-    if (!empty($errors)) {
-        foreach ($errors as $err) {
-            echo '<div class="alert alert-warning alert-dismissible fade show w-75 mx-auto" role="alert">
-  <strong>Alert!</strong> ' . $err . '
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>';
-        }
-    }
 }
 
 ?>
@@ -143,6 +132,19 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 <!-- Fin Header -->
 
+<?php
+require_once './partials/header.php';
+
+// Afficher les erreurs
+if (!empty($errors)) {
+    foreach ($errors as $err) {
+        echo '<div class="alert alert-warning alert-dismissible fade show w-75 mx-auto" role="alert">
+  <strong>Alert!</strong> ' . $err . '
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>';
+    }
+}
+?>
 <div class="container">
 
     <main class="form-signin w-100 m-auto">
@@ -288,3 +290,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <?php
 require_once './partials/footer.php';
 ?>
+
+<script>
+    let showMessage = document.querySelector('.alert-dismissible');
+
+
+    console.log(showMessage);
+</script>

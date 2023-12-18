@@ -67,7 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $nom_bdd = URL . $nom_image;
 
-                $req = $bdd->prepare("INSERT INTO `pictures`(`nom`, `picture_name`) VALUES ('$titre', '$nom_bdd')");
+                $req = $bdd->prepare("INSERT INTO pictures(nom, picture_name) VALUES (:nom, :picture_name)");
+
+                $req->bindValue(':nom', $titre, PDO::PARAM_STR);
+                $req->bindValue(':picture_name', $nom_bdd, PDO::PARAM_STR);
+
                 $req->execute();
             }
         } else {

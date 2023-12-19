@@ -80,6 +80,11 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link custom-link" href="categorie.php">
+                    <i class="bi bi-shop"></i> Catégories
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link custom-link" href="#">
                     <i class="bi bi-person"></i> Clients
                 </a>

@@ -127,8 +127,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
     }
 
-
-    var_dump($errors);
 }
 
 
@@ -155,55 +153,55 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         <form method="POST" action="" enctype="multipart/form-data">
             <div class="input-group mb-3">
                 <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
-                <input type="text" class="form-control" name="reference" placeholder="Référence du produit">
+                <input type="text" class="form-control" name="reference" placeholder="Référence du produit" value="<?= $reference ?? '' ?>">
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text"><i class="bi bi-tags"></i></span>
-                <input type="text" class="form-control" name="categorie" placeholder="Catégorie du produit">
+                <input type="text" class="form-control" name="categorie" placeholder="Catégorie du produit" value="<?= $categorie ?? '' ?>">
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
-                <input type="text" class="form-control" name="titre" placeholder="Titre du produit">
+                <input type="text" class="form-control" name="titre" placeholder="Titre du produit" value="<?= $titre ?? '' ?>">
             </div>
 
             <div class="d-flex justify-content-between">
                 <div class="input-group mb-3 mr-2">
                     <label for="couleur" class="input-group-text">Couleur</label>
                     <select class="form-control" name="couleur">
-                        <option value="rouge">Rouge</option>
-                        <option value="bleu">Bleu</option>
-                        <option value="vert">Vert</option>
-                        <option value="jaune">Jaune</option>
-                        <option value="noir">Noir</option>
-                        <option value="blanc">Blanc</option>
-                        <option value="gris">Gris</option>
-                        <option value="rose">Rose</option>
-                        <option value="multicolore">Multicolore</option>
-                        <option value="autre">Autre</option>
+                        <option <?php if (isset($couleur) && $couleur == "rouge") echo "selected"; ?> value="rouge">Rouge</option>
+                        <option <?php if (isset($couleur) && $couleur == "bleu") echo "selected"; ?> value="bleu">Bleu</option>
+                        <option <?php if (isset($couleur) && $couleur == "vert") echo "selected"; ?> value="vert">Vert</option>
+                        <option <?php if (isset($couleur) && $couleur == "jaune") echo "selected"; ?> value="jaune">Jaune</option>
+                        <option <?php if (isset($couleur) && $couleur == "orange") echo "selected"; ?> value="orange">Orange</option>
+                        <option <?php if (isset($couleur) && $couleur == "violet") echo "selected"; ?> value="violet">Violet</option>
+                        <option <?php if (isset($couleur) && $couleur == "rose") echo "selected"; ?> value="rose">Rose</option>
+                        <option <?php if (isset($couleur) && $couleur == "noir") echo "selected"; ?> value="noir">Noir</option>
+                        <option <?php if (isset($couleur) && $couleur == "blanc") echo "selected"; ?> value="blanc">Blanc</option>
+                        <option  <?php if (isset($couleur) && $couleur == "gris") echo "selected"; ?> value="gris">Gris</option>
                     </select>
                 </div>
 
                 <div class="input-group mb-3 mr-2">
                     <label for="taille" class="input-group-text">Taille</label>
                     <select class="form-control" name="taille">
-                        <option value="xs">XS</option>
-                        <option value="s">S</option>
-                        <option value="m">M</option>
-                        <option value="l">L</option>
-                        <option value="xl">XL</option>
-                        <option value="xxl">XXL</option>
+                        <option <?php if (isset($taille) && $taille == "xs") echo "selected"; ?> value="xs">XS</option>
+                        <option <?php if (isset($taille) && $taille == "s") echo "selected"; ?> value="s">S</option>
+                        <option <?php if (isset($taille) && $taille == "m") echo "selected"; ?> value="m">M</option>
+                        <option <?php if (isset($taille) && $taille == "l") echo "selected"; ?> value="l">L</option>
+                        <option <?php if (isset($taille) && $taille == "xl") echo "selected"; ?> value="xl">XL</option>
+                        <option <?php if (isset($taille) && $taille == "xxl") echo "selected"; ?> value="xxl">XXL</option>
                     </select>
                 </div>
 
                 <div class="input-group mb-3 ">
                     <label for="public" class="input-group-text">Public</label>
                     <select class="form-control" name="public">
-                        <option value="homme">Homme</option>
-                        <option value="femme">Femme</option>
-                        <option value="unisexe">Unisexe</option>
-                        <option value="enfant">Enfant</option>
+                        <option <?php if (isset($public) && $public == "homme") echo "selected"; ?> value="homme">Homme</option>
+                        <option <?php if (isset($public) && $public == "femme") echo "selected"; ?> value="femme">Femme</option>
+                        <option <?php if (isset($public) && $public == "unisexe") echo "selected"; ?> value="unisexe">Unisexe</option>
+                        <option <?php if (isset($public) && $public == "enfant") echo "selected"; ?> value="enfant">Enfant</option>
                     </select>
                 </div>
             </div>
@@ -211,18 +209,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <div class="d-flex justify-content-between">
                 <div class="input-group mb-3 mr-2">
                     <span class="input-group-text"><i class="bi bi-currency-euro"></i></span>
-                    <input type="number" class="form-control" name="prix" placeholder="Prix du produit">
+                    <input type="number" class="form-control" name="prix" placeholder="Prix du produit" value="<?= $prix ?? '' ?>">
                 </div>
 
                 <div class="input-group mb-3">
                     <span class="input-group-text"><i class="bi bi-archive"></i></span>
-                    <input type="number" class="form-control" name="stock" placeholder="Stock du produit">
+                    <input type="number" class="form-control" name="stock" placeholder="Stock du produit" value="<?= $stock ?? '' ?>">
                 </div>
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text"><i class="bi bi-file-earmark-text"></i></span>
-                <textarea class="form-control" name="description" rows="3" placeholder="Description du produit"></textarea>
+                <textarea class="form-control" name="description" rows="3" placeholder="Description du produit"><?= $description ?? '' ?></textarea>
             </div>
 
             <div class="input-group mb-3">
@@ -233,6 +231,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         </form>
 
 
+
+
+
+
+
+        
         <!-- Tableau des produits -->
         <h2 class="text-center mt-5">Liste des produits</h2>
         <table class="table table-responsive table-striped table-hover mt-3">
@@ -288,8 +292,4 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </div>
 <!-- Fin du contenu du tableau de bord -->
 
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-</body>
-
-</html>
+<?php require_once 'footer_admin.php'; ?>

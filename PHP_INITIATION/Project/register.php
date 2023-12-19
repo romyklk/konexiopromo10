@@ -16,6 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // Constant d'erreurs
 
     define('ERROR_NOM', 'Le nom doit contenir entre 2 et 20 caractères');
+    define('ERROR_EMAIL', 'L\'email n\'est pas valide');
+    define('ERROR_PSEUDO', 'Le pseudo n\'est pas valide ou indisponible');
+    define('ERROR_PASSWORD', 'Le mot de passe doit contenir entre 8 et 20 caractères');
+    define('ERROR_CONFIRM_PASSWORD', 'Les mots de passe ne sont pas identiques');
+    define('ERROR_CODE_POSTAL', 'Le code postal doit contenir 5 chiffres');
+    define('ERROR_PRENOM', 'Le prénom doit contenir entre 2 et 20 caractères');
+    define('ERROR_ADRESSE', 'L\'adresse doit contenir entre 2 et 50 caractères');
+    define('ERROR_VILLE', 'La ville doit contenir entre 2 et 20 caractères');
 
     // Sécurisation des données du formulaire
     // htmlspecialchars() convertit les caractères spéciaux en entités HTML
@@ -47,6 +55,19 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // Vérifier si le nom d'utilisateur contient au moins 3 caractères
     if (strlen($username) < 2 || strlen($username) > 20) {
         $errors[] = "Le nom d'utilisateur doit contenir entre 2 et 20 caractères <br>";
+        $error_username = ERROR_PSEUDO;
+    }
+
+    // Vérifier si le nom contient au moins 3 caractères
+    if (strlen($lastname) < 2 || strlen($lastname) > 20) {
+        $errors[] = "Le nom doit contenir entre 2 et 20 caractères <br>";
+        $error_lastname = ERROR_NOM;
+    }
+
+    // Vérifier si le prénom contient au moins 3 caractères
+    if (strlen($firstname) < 2 || strlen($firstname) > 20) {
+        $errors[] = "Le prénom doit contenir entre 2 et 20 caractères <br>";
+        $error_firstname = ERROR_PRENOM;
     }
 
     // Vérifier le format de l'email
@@ -54,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // FILTER_VALIDATE_EMAIL permet de valider un email
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "L'email n'est pas valide <br>";
+        $error_email = ERROR_EMAIL;
     }
 
     // Regex pour vérifier le pseudo
@@ -63,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // preg_match() permet de vérifier si une chaîne de caractères correspond à une expression regulière
     if (!preg_match($pattern, $username)) {
         $errors[] = "Le nom d'utilisateur n'est pas valide <br>";
+        $error_pseudo = ERROR_PSEUDO;
     }
 
     // Vérifier si l'email existe déjà dans la base de données
@@ -74,16 +97,48 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // rowCount() permet de compter le nombre de lignes retournées par la requête
     if ($req->rowCount() > 0) {
         $errors[] = "L'email existe déjà <br>";
+        $error_username = ERROR_PSEUDO;
+    }
+
+    // Vérifier si le pseudo existe déjà dans la base de données
+
+    $sql2 = "SELECT pseudo FROM membre WHERE pseudo = :pseudo";
+    $req2 = $pdo->prepare($sql2);
+    $req2->bindValue(':pseudo', $username, PDO::PARAM_STR);
+    $req2->execute();
+
+    if ($req2->rowCount() > 0) {
+        $errors[] = "Le pseudo existe déjà <br>";
     }
 
     // Vérifier si les 2 mots de passe sont identiques
 
     if ($password != $confirmPassword) {
         $errors[] = "Les mots de passe ne sont pas identiques <br>";
+        $error_password = ERROR_CONFIRM_PASSWORD;
     } else {
         // password_hash() permet de hacher un mot de passe
         // PASSWORD_DEFAULT permet d'utiliser l'algorithme de hachage bcrypt
         $password = password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    // Vérifiaction de la longueur du code postal
+
+    if (strlen($zipcode) != 5) {
+        $errors[] = "Le code postal doit contenir 5 chiffres <br>";
+        $error_zipcode = ERROR_CODE_POSTAL;
+    }
+
+    // Vérifier si la ville contient au moins 3 caractères
+    if (strlen($city) < 2 || strlen($city) > 20) {
+        $errors[] = "La ville doit contenir entre 2 et 20 caractères <br>";
+        $error_city = ERROR_VILLE;
+    }
+
+    // Vérifier si l'adresse contient au moins 3 caractères
+    if (strlen($address) < 2 || strlen($address) > 50) {
+        $errors[] = "L'adresse doit contenir entre 2 et 50 caractères <br>";
+        $error_address = ERROR_ADRESSE;
     }
     // Traitement de l'image de profil
     if (!empty($_FILES['profile-picture']['name'])) {
@@ -129,9 +184,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             header('Location: login.php');
         }
     }
-
-
-
 }
 
 ?>
@@ -143,14 +195,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 require_once './partials/header.php';
 
 // Afficher les erreurs
-if (!empty($errors)) {
+/* if (!empty($errors)) {
     foreach ($errors as $err) {
         echo '<div class="alert alert-warning alert-dismissible fade show w-75 mx-auto" role="alert">
   <strong>Alert!</strong> ' . $err . '
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>';
     }
-}
+} */
 ?>
 <div class="container">
 
@@ -179,17 +231,22 @@ if (!empty($errors)) {
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-person"></i></span>
-                            <input type="text" id="firstname" class="form-control form-control-lg form-control form-control-lg-lg" placeholder="Entrez votre prénom" name="firstname">
+                            <input type="text" id="firstname" class="form-control form-control-lg form-control form-control-lg-lg" placeholder="Entrez votre prénom" name="firstname" value="<?= $firstname ?? '' ?>">
                         </div>
-                        <div id="helpBlock" class="form-text"></div>
+                        <?php if (isset($error_firstname)) : ?>
+                            <div class="text-danger"><?= $error_firstname ?></div>
+                        <?php endif; ?>
+
                     </div>
 
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-person"></i></span>
-                            <input type="text" id="username" class="form-control form-control-lg" placeholder="Entrez votre nom d'utilisateur" name="username">
+                            <input type="text" id="username" class="form-control form-control-lg" placeholder="Entrez votre nom d'utilisateur" name="username" value="<?= $username ?? '' ?>">
                         </div>
-                        <div id="helpBlock" class="form-text"></div>
+                        <?php if (isset($error_username)) : ?>
+                            <div class="text-danger"><?= $error_username ?></div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="form-group">
@@ -197,23 +254,29 @@ if (!empty($errors)) {
                             <span class="input-group-text"><i class="bi bi-lock"></i></span>
                             <input type="password" name="password" class="form-control form-control-lg" placeholder="Entrez votre mot de passe">
                         </div>
-                        <div id="helpBlock" class="form-text"></div>
+                        <?php if (isset($error_password)) : ?>
+                            <div class="text-danger"><?= $error_password ?></div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-house-door"></i></span>
-                            <input type="text" name="address" class="form-control form-control-lg" placeholder="Entrez votre adresse">
+                            <input type="text" name="address" class="form-control form-control-lg" placeholder="Entrez votre adresse" value="<?= $address ?? '' ?>">
                         </div>
-                        <div id="helpBlock" class="form-text"></div>
+                        <?php if (isset($error_address)) : ?>
+                            <div class="text-danger"><?= $error_address ?></div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                            <input type="text" name="zipcode" class="form-control form-control-lg" placeholder="Entrez votre code postal">
+                            <input type="text" name="zipcode" class="form-control form-control-lg" placeholder="Entrez votre code postal" value="<?= $zipcode ?? '' ?>">
                         </div>
-                        <div id="helpBlock" class="form-text"></div>
+                        <?php if (isset($error_zipcode)) : ?>
+                            <div class="text-danger"><?= $error_zipcode ?></div>
+                        <?php endif; ?>
                     </div>
 
                 </div>
@@ -222,17 +285,21 @@ if (!empty($errors)) {
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-person"></i></span>
-                            <input type="text" name="lastname" class="form-control form-control-lg" placeholder="Entrez votre nom">
+                            <input type="text" name="lastname" class="form-control form-control-lg" placeholder="Entrez votre nom" value="<?= $lastname ?? '' ?>">
                         </div>
-                        <div id="helpBlock" class="form-text"></div>
+                        <?php if (isset($error_lastname)) : ?>
+                            <div class="text-danger"><?= $error_lastname ?></div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                            <input type="text" name="email" class="form-control form-control-lg" placeholder="Entrez votre email">
+                            <input type="text" name="email" class="form-control form-control-lg" placeholder="Entrez votre email" value="<?= $email ?? '' ?>">
                         </div>
-                        <div id="helpBlock" class="form-text"></div>
+                        <?php if (isset($error_email)) : ?>
+                            <div class="text-danger"><?= $error_email ?></div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="form-group">
@@ -240,15 +307,19 @@ if (!empty($errors)) {
                             <span class="input-group-text"><i class="bi bi-lock"></i></span>
                             <input type="password" name="confirm-password" class="form-control form-control-lg" placeholder="Confirmez votre mot de passe">
                         </div>
-                        <div id="helpBlock" class="form-text"></div>
+                        <?php if (isset($error_confirm_password)) : ?>
+                            <div class="text-danger"><?= $error_confirm_password ?></div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-building"></i></span>
-                            <input type="text" name="city" class="form-control form-control-lg" placeholder="Entrez votre ville">
+                            <input type="text" name="city" class="form-control form-control-lg" placeholder="Entrez votre ville" value="<?= $city ?? '' ?>">
                         </div>
-                        <div id="helpBlock" class="form-text"></div>
+                        <?php if (isset($error_city)) : ?>
+                            <div class="text-danger"><?= $error_city ?></div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="form-group">
@@ -256,19 +327,10 @@ if (!empty($errors)) {
                             <label class="input-group-text form-control-lg" for="country"><i class="bi bi-globe"></i></label>
                             <select class="form-select" name="country">
                                 <option value="france">France</option>
-                                <option value="belgique">Belgique</option>
-                                <option value="suisse">Suisse</option>
-                                <option value="luxembourg">Luxembourg</option>
-                                <option value="italie">Italie</option>
-                                <option value="canada">Canada</option>
-                                <option value="espagne">Espagne</option>
-                                <option value="portugal">Portugal</option>
-                                <option value="allemagne">Allemagne</option>
-                                <option value="royaume-uni">Royaume-Uni</option>
-                                <option value="usa">États-Unis</option>
-                                <option value="australie">Australie</option>
-                                <option value="japon">Japon</option>
-                                <option value="auttre-pays">Autre</option>
+                                <option <?php if (isset($country) && $country == 'belgique') echo 'selected' ?> value="belgique">Belgique</option>
+                                <option <?php if (isset($country) && $country == 'suisse') echo 'selected' ?> value="suisse">Suisse</option>
+                                <option <?php if (isset($country) && $country == 'canada') echo 'selected' ?> value="canada">Canada</option>
+                                <option <?php if (isset($country) && $country == 'autre') echo 'selected' ?> value="autre">Autre</option>
                             </select>
                         </div>
                         <div id="helpBlock" class="form-text"></div>

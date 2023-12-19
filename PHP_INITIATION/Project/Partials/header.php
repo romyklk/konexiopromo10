@@ -54,7 +54,7 @@
                     <?php if (userConnected()) : ?>
                         <div class="dropdown text-end">
                             <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://randomuser.me/api/portraits/women/88.jpg" alt="user random" width="32" height="32" class="rounded-circle">
+                                <img src="<?= IMAGE_URL . 'profil/' . $_SESSION['user']['avatar'] ?>" alt="avatar" class="img-fluid rounded-circle " alt="user random" width="50" height="50">
                             </a>
                             <ul class="dropdown-menu text-small">
                                 <li><a class="dropdown-item" href="profil.php">Profil</a></li>

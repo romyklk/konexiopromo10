@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($_POST as $key => $value) {
         $_POST[$key] = htmlspecialchars(addslashes($value));
     }
+    $email = $_POST['email'];
+
 
     // Je vérifie que l'email existe en BDD
 
@@ -80,7 +82,7 @@ generateErrorMessage($errors);
         </h1>
         <form class="w-100 shadow rounded p-5" method="post" action="">
             <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingInput" placeholder="Entrez votre email" name="email">
+                <input type="email" class="form-control" id="floatingInput" placeholder="Entrez votre email" name="email" value="<?= $email ?? '' ?>">
                 <label for="floatingInput">
                     Entrez votre email
                 </label>

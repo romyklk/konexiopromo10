@@ -110,6 +110,8 @@ Dans cette étape nous allons créer la partie inscription et connexion du site.
     - prix(int)
     - stock(int)
 
+`CREATE TABLE `konexion_project`.`produit` (`id_produit` INT NOT NULL AUTO_INCREMENT , `reference` VARCHAR(20) NOT NULL , `categorie` VARCHAR(50) NOT NULL , `titre` VARCHAR(100) NOT NULL , `description` TEXT NOT NULL , `couleur` VARCHAR(20) NOT NULL , `taille` VARCHAR(10) NOT NULL , `public` ENUM('m', 'f', 'unisexe', 'enfant') NOT NULL , `photo` VARCHAR(255) NOT NULL , `prix` INT NOT NULL , `stock` INT NOT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id_produit`), UNIQUE (`reference`)) ENGINE = InnoDB;`
+
 2. Traiter le formulaire d'ajout de produit:
 
     `Tous les champs sont obligatoires`

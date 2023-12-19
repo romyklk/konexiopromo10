@@ -1,9 +1,11 @@
 <?php
- require_once './partials/header.php';
  require_once './inc/init.php';
 
 ?>
 
+<?php
+require_once './partials/header.php';
+?>
         <div class="container">
             <!-- Hero Section -->
             <div class="row">

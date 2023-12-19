@@ -2,6 +2,13 @@
 
 require_once './inc/init.php';
 
+// Redirection si l'utilisateur est déjà connecté
+
+if (userConnected()) {
+    header('Location: profil.php');
+    exit();
+}
+
 //TRAITEMENT DU FORMUALIRE
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {

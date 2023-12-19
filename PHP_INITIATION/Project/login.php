@@ -1,6 +1,13 @@
 <?php
 require_once './inc/init.php';
 
+
+// Redirection si l'utilisateur est déjà connecté
+
+if (userConnected()) {
+    header('Location: profil.php');
+    exit();
+}
 // Traitement du formulaire
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -23,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Je vérifie que le mot de passe saisi correspond au mot de passe en BDD
         //password_verify() permet de comparer un mot de passe en clair avec un mot de passe hashé
 
-        if(password_verify($_POST['password'], $user['mdp'])) {
+        if (password_verify($_POST['password'], $user['mdp'])) {
             // Si le mot de passe est correct, je connecte l'utilisateur
             // Je stocke les informations de l'utilisateur dans la session
             $_SESSION['user']['id_membre'] = $user['id_membre'];
@@ -42,11 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Je redirige l'utilisateur vers la page d'accueil
             header('Location: profil.php');
-            
         } else {
             $errors[] = 'Le mot de passe est incorrect';
         }
-
     } else {
         $errors[] = 'Cet email n\'existe pas en BDD';
     }
@@ -60,23 +65,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!-- PARTIE HTML -->
 <?php
 require_once './partials/header.php';
-
-// Afficher les erreurs
-if (!empty($errors)) {
-    foreach ($errors as $err) {
-        echo '<div class="alert alert-warning alert-dismissible fade show w-75 mx-auto" role="alert">
-  <strong>Alert!</strong> ' . $err . '
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>';
-    }
-}
-
+generateErrorMessage($errors);
 ?>
 <!-- Fin Header -->
 
 <div class="container">
 
     <main class="form-signin w-50 m-auto">
+
 
         <img class="mb-4" src="./public/assets/upload/logo/logo.png" alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal text-center">
@@ -120,3 +116,4 @@ if (!empty($errors)) {
 <?php
 require_once './partials/footer.php';
 ?>
+

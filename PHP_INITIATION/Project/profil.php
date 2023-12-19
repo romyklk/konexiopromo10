@@ -1,9 +1,24 @@
 <?php
-require_once './partials/header.php';
+require_once './inc/init.php';
+
+if (!userConnected()) {
+    header('Location: login.php');
+    exit;
+}
+
+// Si l'utilisateur clique sur le bouton logout alors on détruit la session et on le redirige vers la page d'accueil
+if (isset($_GET['action']) && $_GET['action'] == 'logout') {
+    unset($_SESSION['user']);
+    header('Location: index.php');
+    exit;
+}
 
 ?>
 
 
+<?php
+require_once './partials/header.php';
+?>
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
@@ -41,7 +56,7 @@ require_once './partials/header.php';
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#logout-content">
+                        <a class="nav-link" href="profil.php?action=logout">
                             Logout
                             <i class="bi bi-box-arrow-right"></i>
                         </a>
@@ -61,13 +76,18 @@ require_once './partials/header.php';
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <img src="https://randomuser.me/api/portraits/women/88.jpg" alt="Photo de profil" class="img-fluid rounded-circle">
+                                <img src= "<?= IMAGE_URL .'profil/'. $_SESSION['user']['avatar'] ?>" alt="avatar" class="img-fluid rounded-circle">
                             </div>
                             <div class="col-md-9">
-                                <p>Nom: John Doe</p>
-                                <p>Email: john.doe@example.com</p>
-                                <p>Adresse: 123 Rue de la Liberté, Ville</p>
-                                <p>Téléphone: +123 456 7890</p>
+                                <p>
+                                    Nom : <?= $_SESSION['user']['nom'] . ' '. $_SESSION['user']['prenom'] ?>
+                                </p>
+                                <p>Email:
+                                    <?= $_SESSION['user']['email'] ?>
+                                </p>
+                                <p>Adresse: 
+                                    <?= $_SESSION['user']['adresse'] . ' ' . $_SESSION['user']['code_postal'] . ' ' . $_SESSION['user']['ville'] . ' ' . $_SESSION['user']['pays'] ?>
+                                </p>
                             </div>
                         </div>
                     </div>

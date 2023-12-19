@@ -83,7 +83,6 @@ Dans cette étape nous allons créer la partie inscription et connexion du site.
 
 6. Créer un fichier deconnexion.php qui permet de déconnecter l'user et de le rediriger vers la page index.php
 
-
 ### BONUS
 
 1. En utilisant la fonction mail() de PHP, envoyer un mail à l'user qui vient de s'inscrire pour le remercier de son inscription et lui souhaiter la bienvenue sur le site.

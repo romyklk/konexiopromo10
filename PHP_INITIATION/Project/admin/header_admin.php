@@ -81,7 +81,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link custom-link" href="categorie.php">
-                    <i class="bi bi-shop"></i> Catégories
+                    <i class="bi bi-tags"></i> Catégories
                 </a>
             </li>
             <li class="nav-item">

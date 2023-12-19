@@ -8,6 +8,7 @@ if (!userIsAdmin()) {
     exit;
 }
 
+
 define('PRODUCT_PATH', $_SERVER['DOCUMENT_ROOT'] . '/KONEXIO10/PHP_INITIATION/Project/public/assets/upload/shop/');
 
 // Traitement du formulaire d'ajout de produit
@@ -119,14 +120,47 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $stmt->bindValue(':photo', $photoName, PDO::PARAM_STR);
         $stmt->bindValue(':prix', $prix, PDO::PARAM_INT);
         $stmt->bindValue(':stock', $stock, PDO::PARAM_INT);
-        if($stmt->execute()) {
+        if ($stmt->execute()) {
             move_uploaded_file($_FILES['photo']['tmp_name'], PRODUCT_PATH . $photoName);
             header('Location: produit.php');
         } else {
             $errors[] = "Erreur lors de l'ajout du produit";
         }
     }
+}
 
+// Récupération des produits dans la BDD
+
+$req3 = "SELECT * FROM produit";
+$stmt3 = $pdo->prepare($req3);
+$stmt3->execute();
+$products = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+
+// Suppression d'un produit
+
+if(isset($_GET['id']) && !empty($_GET['id']))
+{
+    $id = $_GET['id'];
+
+    // Vérification de l'existence du produit
+    $req4 = "SELECT * FROM produit WHERE id_produit = :id";
+    $stmt4 = $pdo->prepare($req4);
+    $stmt4->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt4->execute();
+    if($stmt4->rowCount() == 0)
+    {
+        header('Location: produit.php');
+        exit;
+    }else{
+        $req5 = "DELETE FROM produit WHERE id_produit = :id";
+        $stmt5 = $pdo->prepare($req5);
+        $stmt5->bindValue(':id', $id, PDO::PARAM_INT);
+        if($stmt5->execute())
+        {
+            header('Location: produit.php');
+            exit;
+        }
+    }
 }
 
 
@@ -150,6 +184,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     <div class="container">
         <!-- Formulaire d'ajout de produits -->
+        <?php
+        if (!empty($errors)) {
+            generateErrorMessage($errors);
+        }
+        ?>
         <form method="POST" action="" enctype="multipart/form-data">
             <div class="input-group mb-3">
                 <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
@@ -179,7 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <option <?php if (isset($couleur) && $couleur == "rose") echo "selected"; ?> value="rose">Rose</option>
                         <option <?php if (isset($couleur) && $couleur == "noir") echo "selected"; ?> value="noir">Noir</option>
                         <option <?php if (isset($couleur) && $couleur == "blanc") echo "selected"; ?> value="blanc">Blanc</option>
-                        <option  <?php if (isset($couleur) && $couleur == "gris") echo "selected"; ?> value="gris">Gris</option>
+                        <option <?php if (isset($couleur) && $couleur == "gris") echo "selected"; ?> value="gris">Gris</option>
                     </select>
                 </div>
 
@@ -236,7 +275,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
 
-        
+
         <!-- Tableau des produits -->
         <h2 class="text-center mt-5">Liste des produits</h2>
         <table class="table table-responsive table-striped table-hover mt-3">
@@ -252,39 +291,22 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 </tr>
             </thead>
             <tbody>
+                <?php foreach ($products as $product) : ?>
+                    <tr>
+                        <td><?= $product['reference'] ?></td>
+                        <td><?= $product['categorie'] ?></td>
+                        <td><?= $product['titre'] ?></td>
+                        <td><?= $product['prix'] ?> €</td>
+                        <td><?= substr($product['description'], 0, 100) ?></td>
+                        <td><img src="/KONEXIO10/PHP_INITIATION/Project/public/assets/upload/shop/<?= $product['photo'] ?>" alt="<?= $product['titre'] ?>" width="100"></td>
+                        <td class="d-flex justify-content-around">
 
-                <tr>
-                    <td>REF123</td>
-                    <td>Vêtements</td>
-                    <td>Chemise</td>
-                    <td>25.99€</td>
-                    <td>Chemise élégante pour hommes</td>
-                    <td><img src="https://cdn.pixabay.com/photo/2023/06/30/07/49/ai-generated-8097822_1280.jpg" alt="Chemise" width="100" class="img-fluid"></td>
-                    <td>
-                        <a href="#" class="btn btn-warning btn-sm">
-                            <i class="bi bi-pencil-square"></i>
-                        </a>
-                        <a href="#" class="btn btn-danger btn-sm">
-                            <i class="bi bi-trash3"></i>
-                        </a>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>REF456</td>
-                    <td>Vêtements</td>
-                    <td>Pantalon</td>
-                    <td>35.99€</td>
-                    <td>Pantalon élégant pour hommes</td>
-                    <td><img src="https://previews.123rf.com/images/kvladimirv/kvladimirv1809/kvladimirv180900129/108268690-jean-bleu-classique-pour-homme-et-jupe-en-denim-violet-sur-fond-bleu-la-vue-du-haut-v%C3%AAtements-pour.jpg" alt="Pantalon" width="100" class="img-fluid"></td>
-                    <td>
-                        <a href="#" class="btn btn-warning btn-sm">
-                            <i class="bi bi-pencil-square"></i>
-                        </a>
-                        <a href="#" class="btn btn-danger btn-sm">
-                            <i class="bi bi-trash3"></i>
-                        </a>
-                    </td>
+                            <a href="edit_product.php?id=<?= $product['id_produit'] ?>" class="btn btn-warning mr-2"><i class="bi bi-pencil-square"></i></a>
+                            
+                            <a href="produit.php?id=<?= $product['id_produit'] ?>" class="btn btn-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce produit ?')"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
 

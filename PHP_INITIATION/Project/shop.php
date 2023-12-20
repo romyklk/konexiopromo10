@@ -23,8 +23,8 @@ require_once './partials/header.php';
                             <!-- Filtre par ordre de prix -->
                             <div class="mb-3">
                                 <select class="form-select" id="ordrePrix" name="ordrePrix">
-                                    <option value="croissant">Prix Croissant</option>
-                                    <option value="decroissant">Prix Décroissant</option>
+                                    <option value="ASC">Prix Croissant</option>
+                                    <option value="DESC">Prix Décroissant</option>
                                 </select>
                             </div>
 

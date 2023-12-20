@@ -44,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $zipcode = $_POST['zipcode'];
     $city = $_POST['city'];
     $country = $_POST['country'];
+    var_dump($_POST);
 
 
     // Vérifier si tous les champs sont remplis
@@ -216,7 +217,7 @@ require_once './partials/header.php';
                 <div class="col-md-6">
                     <div class="form-group mb-3">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="male" value="male" checked>
+                            <input class="form-check-input" type="radio" name="gender" id="male" value="male" <?php if (isset($gender) && $gender == "male") echo 'checked' ?>>
                             <label class="form-check-label" for="male">Homme</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -224,7 +225,7 @@ require_once './partials/header.php';
                             <label class="form-check-label" for="female">Femme</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="autre" value="autre">
+                            <input class="form-check-input" type="radio" name="gender" id="autre" value="autre" checked>
                             <label class="form-check-label" for="autre">Autre</label>
                         </div>
                     </div>

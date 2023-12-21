@@ -1,3 +1,6 @@
+<?php
+require_once 'database.php';
+?>
 <!doctype html>
 <html lang="en">
 
@@ -26,6 +29,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="connexion.php">Connexion</a>
                     </li>
+                    <?php if(isLogged()) :?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?action=logout">Logout</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Article
@@ -39,9 +46,8 @@
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>
                     </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
     </nav>
-
-

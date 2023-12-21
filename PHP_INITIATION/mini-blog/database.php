@@ -6,3 +6,17 @@ $bdd = new PDO('mysql:host=localhost;dbname=mini_blog', 'root', ''
         PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
     ]
 );
+
+session_start();
+
+// fonction pour vérifier si l'utilisateur est connecté
+
+function isLogged()
+{
+    if(isset($_SESSION['user']))
+    {
+        return true;
+    }else{
+        return false;
+    }
+}

@@ -1,44 +1,35 @@
-<?php 
+<?php
 require_once 'database.php';
 
-if($_SERVER['REQUEST_METHOD'] == "POST")
-{
-   $errors = [];
-   // Vérifier si les champs sont vides
-   if(empty($_POST['nom']))
-   {
-       $errors['nom'] = "Le nom est obligatoire";
-   }
-    if(empty($_POST['prenom']))
-    {
-         $errors['prenom'] = "Le prenom est obligatoire";
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $errors = [];
+    // Vérifier si les champs sont vides
+    if (empty($_POST['nom'])) {
+        $errors['nom'] = "Le nom est obligatoire";
     }
-    if(empty($_POST['email']))
-    {
-         $errors['email'] = "L'email est obligatoire";
+    if (empty($_POST['prenom'])) {
+        $errors['prenom'] = "Le prenom est obligatoire";
     }
-    if(empty($_POST['password']))
-    {
-         $errors['password'] = "Le mot de passe est obligatoire";
+    if (empty($_POST['email'])) {
+        $errors['email'] = "L'email est obligatoire";
+    }
+    if (empty($_POST['password'])) {
+        $errors['password'] = "Le mot de passe est obligatoire";
     }
 
     // Vérification de la longueur des champs
-    if(strlen($_POST['nom']) <3 || strlen($_POST['nom']) > 20)
-    {
+    if (strlen($_POST['nom']) < 3 || strlen($_POST['nom']) > 20) {
         $errors['nom'] = "Le nom doit être compris entre 3 et 20 caractères";
     }
-    if(strlen($_POST['prenom']) <3 || strlen($_POST['prenom']) > 50)
-    {
+    if (strlen($_POST['prenom']) < 3 || strlen($_POST['prenom']) > 50) {
         $errors['prenom'] = "Le prenom doit être compris entre 3 et 50 caractères";
     }
-    if(strlen($_POST['password']) <4 || strlen($_POST['password']) > 20)
-    {
+    if (strlen($_POST['password']) < 4 || strlen($_POST['password']) > 20) {
         $errors['password'] = "Le mot de passe doit être compris entre 4 et 20 caractères";
     }
 
     // vérification du format de l'email
-    if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
-    {
+    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = "L'email n'est pas valide";
     }
 
@@ -47,16 +38,15 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     $request = $bdd->prepare($sql);
     $request->bindValue(':email', $_POST['email']);
     $request->execute();
-    if($request->rowCount() > 0)
-    {
+    if ($request->rowCount() > 0) {
         $errors['email'] = "L'email existe déjà";
     }
 
     // Si il n'y a pas d'erreurs
-    if(empty($errors)){
+    if (empty($errors)) {
         $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $query = "INSERT INTO `user`(`nom`, `prenom`, `email`, `password`) VALUES (:nom, :prenom, :email, :password)";
-        $req= $bdd->prepare($query);
+        $req = $bdd->prepare($query);
         $req->bindValue(':nom', $_POST['nom']);
         $req->bindValue(':prenom', $_POST['prenom']);
         $req->bindValue(':email', $_POST['email']);
@@ -64,7 +54,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         $req->execute();
         header('Location: connexion.php');
     }
-   
 }
 ?>
 

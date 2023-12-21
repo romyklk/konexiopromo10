@@ -49,17 +49,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $titre = $_POST['titre'];
         $contenu = $_POST['contenu'];
         $photo = time() . '_' . $_FILES['image']['name'];
+        $categorie = $_POST['categorie'];
 
-        $insert = "INSERT INTO article(titre, contenu, photo) VALUES (:titre, :contenu, :photo)";
+        $insert = "INSERT INTO article(titre,id_categorie, contenu, photo) VALUES (:titre,:categorie, :contenu, :photo)";
         $query = $bdd->prepare($insert);
         $query->bindValue(':titre', $titre);
         $query->bindValue(':contenu', $contenu);
+        $query->bindValue(':categorie', $categorie, PDO::PARAM_INT);
         $query->bindValue(':photo', $photo);
         if ($query->execute()) {
             // Ajout de l'image dans le dossier photo
             move_uploaded_file($_FILES['image']['tmp_name'], UPLOAD_DIR . $photo);
         }
     }
+
 
 }
 
@@ -70,6 +73,7 @@ $select = "SELECT DISTINCT * FROM categorie";
 $query = $bdd->prepare($select);
 $query->execute();
 $categories = $query->fetchAll(PDO::FETCH_ASSOC);
+
 
 ?>
 
@@ -83,7 +87,8 @@ $categories = $query->fetchAll(PDO::FETCH_ASSOC);
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="titre">Titre</label>
-                    <input type="text" name="titre" id="titre" class="form-control" placeholder="Titre de l'article">
+                    <input type="text" name="titre" id="titre" class="form-control" placeholder="Titre de l'article" value="<?= $_POST['titre'] ?? '' ?>">
+                    <div class="text-danger"><?= $errors['titre'] ?? '' ?></div>
                 </div>
                 <!-- Affichage des catégories -->
                 <select name="categorie" class="form-select mb-3 mt-3">
@@ -96,11 +101,13 @@ $categories = $query->fetchAll(PDO::FETCH_ASSOC);
 
                 <div class="form-group">
                     <label for="contenu">Contenu</label>
-                    <textarea name="contenu" id="contenu" cols="30" rows="10" class="form-control" placeholder="Contenu de l'article"></textarea>
+                    <textarea name="contenu" id="contenu" cols="30" rows="10" class="form-control" placeholder="Contenu de l'article"><?= $_POST['contenu'] ?? '' ?></textarea>
+                    <div class="text-danger"><?= $errors['contenu'] ?? '' ?></div>
                 </div>
                 <div class="form-group">
                     <label for="image">Image</label>
                     <input type="file" name="image" id="image" class="form-control">
+                    <div class="text-danger"><?= $errors['image'] ?? '' ?></div>
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Ajouter</button>
 

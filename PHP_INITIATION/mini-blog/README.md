@@ -35,3 +35,16 @@ Dans ce mini projet, nous allons créer un mini blog en PHP procédural. Nous al
   - date_creation(datetime not null)
 
 `CREATE TABLE `mini_blog`.`categorie` (`id_categorie` INT NOT NULL AUTO_INCREMENT , `nom_categorie` VARCHAR(20) NOT NULL , `date_creation` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id_categorie`)) ENGINE = InnoDB;`
+
+
+## Partie 2 (Inscription et connexion)
+Création de la table utilisateur
+  -Table User
+    - id_user(int pk auto_increment not null)
+    - nom(varchar(min 3 max 20) not null)
+    - prenom(varchar(min 3 max 20) not null)
+    - email(varchar(min 3 max 20) not null)
+    - password(varchar(min 3 max 20) not null)
+    - date_creation(datetime not null)
+
+`CREATE TABLE `project`.`user` (`id_user` INT NOT NULL AUTO_INCREMENT , `nom` VARCHAR(20) NOT NULL , `prenom` VARCHAR(50) NOT NULL , `email` VARCHAR(100) NOT NULL , `password` VARCHAR(255) NOT NULL , `date_creation` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id_user`)) ENGINE = InnoDB;`

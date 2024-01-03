@@ -1,5 +1,5 @@
 <?php
-
+require_once "Commande.php";
 /* Créer une classe Cart avec les propriétés suivantes :
     stock => integer
     prix => float
@@ -24,7 +24,7 @@ class Cart
     public float $prix;
     public string $titre;
     public bool $disponible;
-    public array $commandes;
+    public Commande $commandes;
 
     public function ajouterArticle(int $stock, float $prix, string $titre, bool $disponible):void
     {
@@ -38,12 +38,9 @@ class Cart
 
     public function afficherArticle(int $stock, float $prix, string $titre, bool $disponible):array
     {
-        return [
-            "stock" => $stock,
-            "prix" => $prix,
-            "titre" => $titre,
-            "disponible" => $disponible
-        ];
+        $cmde = new Commande();
+        $cmde->addToCommande();
+        return $cmde->data;
     }
 
 }

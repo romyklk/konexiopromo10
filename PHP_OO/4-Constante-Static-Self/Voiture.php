@@ -5,6 +5,7 @@ class Voiture
     private static $marque = "BMW";
     private $couleur = "Noir";
     private static $modele = "X6";
+    const NB_ROUES = 4; // Constante de classe. Les constantes sont par défaut public et static
 
     // GETTER
     // Puisse que la propriété est static,elle appartieny à la classe et non à l'objet. La classe à l'intérieur d'elle même est représenté par self::
@@ -50,10 +51,11 @@ var_dump($voiture1);
 
 var_dump(get_class_methods($voiture1)); // Permet d'afficher les méthodes de la classe Voiture
 // Affichage :
-echo "La voiture 1 est de marque " . $voiture1->getMarque() ." " . Voiture::getModele() . " et de couleur " . $voiture1->getCouleur() . "<br>";
+echo "La voiture 1 est de marque " . $voiture1->getMarque() ." " . Voiture::getModele(). " et de couleur " . $voiture1->getCouleur() . "<br>";
 
 // Création d'un objet
 $voiture2 = new Voiture;
+var_dump($voiture2);
 $voiture2->setMarque("Mercedes");
 $voiture2->setModele("Classe A");
 $voiture2->setCouleur("Rouge");

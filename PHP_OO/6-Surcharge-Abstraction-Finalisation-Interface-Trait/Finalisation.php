@@ -37,3 +37,45 @@ class Extension extends Application2
 {
    // public function run(){} Erreur : on ne peut pas surcharger une méthode finale
 }
+
+////////
+echo '<hr>';
+final class Recette 
+{
+    public function ingredients()
+    {
+        echo'Les ingrédients de la recette sont : huile, oeufs, farine, sucre, levure, chocolat <br>';
+    }
+}
+
+//class Menu extends Recette {} // Erreur : on ne peut pas hériter d'une classe finale
+
+$recette = new Recette;
+$recette->ingredients();
+
+class Cuisson 
+{
+    final public function tempsDeCuisson()
+    {
+        echo 'Le temps de cuisson est de 30 minutes <br>';
+    }
+
+    public function temperature()
+    {
+        echo 'La température est de 180° <br>';
+    }
+}
+
+class CuissonFour extends Cuisson
+{
+    //public function tempsDeCuisson(){} // Erreur : on ne peut pas surcharger une méthode finale
+
+    public function temperature()
+    {
+        echo 'La température est de 200° <br>';
+    }
+}
+
+$four = new CuissonFour;
+$four->tempsDeCuisson();
+$four->temperature();

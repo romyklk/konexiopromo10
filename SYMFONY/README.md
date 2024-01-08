@@ -72,8 +72,10 @@ Les composants symfony sont des bibliothèques PHP, qui peuvent être installée
 
 Pour créer notre première application symfony, nous allons utiliser la commande :
 
+**WEBAPP** :
 `symfony new nom_de_l_application --webapp`. Cette commande va créer une application symfony avec toutes les fonctionnalités activées.
 
+**MICROSERVICE** :
 `symfony new nom_de_l_application` . Cette commande va créer une application symfony avec les fonctionnalités minimales.
 
 ## Lancer notre application symfony

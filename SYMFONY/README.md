@@ -80,6 +80,7 @@ Pour créer notre première application symfony, nous allons utiliser la command
 
 ## Lancer notre application symfony
 
+ Pour lancer notre application, on doit se placer dans le dossier de notre application, puis taper la commande `symfony serve` ou `symfony server:start`. Cette commande va lancer notre application symfony.
 
 
 
